@@ -43,7 +43,7 @@ Basic features of the RStudio IDE include:
 * windows for environment management, data visualization, and debugging
 * facilities for version control & project management
 
-![r_studio_example]("/images/r-studio-example.png")
+![r_studio_example](/images/r-studio-example.png)
 
 ### R as a Functional Programming Language
 
