@@ -45,7 +45,7 @@ Basic features of the RStudio IDE include:
 
 ![r_studio_example](/images/r-studio-example.png)
 
-There are options for different types of files in R Studio. Among these are "R Scripts" where you can run all your code with the click of a button and "R Markdowns", which give you the power to run your code in chunks. R Markdown files also give you the opportunity to knit your code and it's output into a PDF. Commonet in R Markdown files can be written in between code chunks.
+There are options for different types of files in R Studio. Among these are "R Scripts" where you can run all your code with the click of a button and "R Markdowns", which give you the power to run your code in chunks. R Markdown files also give you the opportunity to knit your code and it's output into a PDF. Comments in R Markdown files can be written in between code chunks.
 
 ### R as a Functional Programming Language
 
@@ -63,3 +63,38 @@ Manual/help pages for a specific function can be obtained using ?. To bring up t
 ``` R {cmd}
 ?print()
 ```
+## Orienting Yourself
+
+Now that we understand our programming environment let's start with a gentle introduction to programming using R as a calculator to orient ourselves. In the Console window of R Studio enter the following code line by line:
+
+``` R {cmd}
+4 + 5
+
+9 - 1
+
+8 / 2
+
+6^2
+
+7 * 5
+```
+
+We can expand R's functionality by setting variables for some of these equations. Enter the below code in the Console window line by line:
+
+``` R {cmd}
+x = 4 + 5
+
+x
+
+y = 9 - 1
+
+y
+
+z = x * y
+
+z
+```
+
+As you can see from the above code, each variable is representative of the result of it's respective equation. We can even conduct calculations with the variables. This becomes important when our variables have more complex structures as seen in vectors, matricies, and dataframes.
+
+## Data Structures
