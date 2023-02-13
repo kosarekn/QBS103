@@ -45,6 +45,8 @@ Basic features of the RStudio IDE include:
 
 ![r_studio_example](/images/r-studio-example.png)
 
+There are options for different types of files in R Studio. Among these are "R Scripts" where you can run all your code with the click of a button and "R Markdowns", which give you the power to run your code in chunks. R Markdown files also give you the opportunity to knit your code and it's output into a PDF. Commonet in R Markdown files can be written in between code chunks.
+
 ### R as a Functional Programming Language
 
 R is generally considered a functional programming language. Without going into detail, this essentially means that the way in which R performs tasks and solves problems is centered around functions.
