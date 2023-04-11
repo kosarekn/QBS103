@@ -98,3 +98,139 @@ z
 As you can see from the above code, each variable is representative of the result of it's respective equation. We can even conduct calculations with the variables. This becomes important when our variables have more complex structures as seen in vectors, matricies, and dataframes.
 
 ## Data Structures
+
+# Vectors
+
+Vectors can only hold one type of data (a property referred to as being atomic). In R, five basic object classes exist:
+
+* numeric - real numbers (e.g. 33.3334)
+* integer - whole numbers (e.g. 42)
+* character - strings of characters (e.g. letters, words, sentences)
+* logical - `r TRUE` or `r FALSE` (commonly called 'Boolean' values elsewhere)
+* complex - numbers with real and imaginary parts
+
+Vectors can be created using the `r c()` function (standing for combine), which concatenates its arguments together into a single vector. `r c()` can be used in conjunction with the assignment operator `r <-` which tells R you want to assign that vector to a specific variable.
+
+``` R {cmd}
+# numeric
+x <- c(1.63, 2.25, 3.83, 4.99)
+
+# integer
+x <- as.integer(c(1, 2, 3, 4))
+
+# character
+x <- as.character(c("a", "b", "c", "d"))
+
+# logical
+x <- c(TRUE, FALSE, TRUE, TRUE)
+
+# mixed?
+x <- c(1, "a")
+```
+
+Each object class has specific attributes, which we can extract using the appropriate accessor functions. For example, the class of an object is itself an attribute that can be obtained using the `r class()` function:
+
+``` R {cmd}
+class(x)
+```
+
+Another important attribute is length. For example, if we want to know how many elements are in a character string, we can use the `r length()` function.
+
+``` R {cmd}
+length(x)
+```
+
+Vectors can be combined or nested to create a single vector, or evaluated against each other:
+
+``` R {cmd}
+# combine a vector and a nested vector
+x <- c(1, 2, 3, 4, c(1, 2, 3, 4))
+x
+
+# multiply two integer vectors
+y <- c(2, 2, 2, 2)
+x * y
+```
+
+Even though vectors are atomic, they can be coerced from one class to another using functions written to modify their attributes. e.g.
+
+``` R {cmd}
+x <- c(1, 2, 3, 4)
+as.character(x)
+
+x <- c(TRUE, FALSE, TRUE, TRUE)
+as.numeric(x)
+
+x <- c(1.63, 2.25, 3.83, 4.99)
+as.integer(x)
+```
+
+Elements within vectors can be subset or indexed based on their position in that vector. Individual elements can also be assigned names, which can also be used to perform indexing.
+
+``` R {cmd}
+# define a character vector
+x <- c("a", "b", "c", "d")
+
+# get elements 1 and 3
+x[c(1,3)]
+
+# get elements 1 to 3 using the ':' operator
+x[c(1:3)]
+
+# define a numeric vector
+x <- c(1.63, 2.25, 3.83, 4.99)
+
+# assign it names
+names(x) <- c("gene 1", "gene 2", "gene 3", "gene 4")
+
+# index for specific element
+x["gene 1"]
+```
+
+Vectors can contain missing values, defined by `r NA` and `r NaN`. These elements can be identified with the functions `r is.na()` or `r is.nan()':
+
+``` R {cmd}
+x <- c(1.63, NA, 3.83, 4.99)
+x
+
+x.na <- is.na(x)
+x.na
+
+# what object class is returned  
+class(x.na)
+```
+
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> Operator </th>
+   <th style="text-align:right;"> Effect </th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td style="text-align:right;"> + </td>
+   <td style="text-align:right;"> addition </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> - </td>
+   <td style="text-align:right;"> subtraction </td>
+  </tr>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> * </td>
+   <td style="text-align:right;"> multiplication </td>
+  </tr>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> / </td>
+   <td style="text-align:right;"> division </td>
+  </tr>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> ^ </td>
+   <td style="text-align:right;"> exponentiation </td>
+  </tr>
+</tbody>
+</table>
