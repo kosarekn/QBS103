@@ -761,7 +761,7 @@ meta_data <- read.csv(file = "metadata_df.csv",row.names=1)
 meta_data
 ```
 
-Let's read in some publicly available data from a real RNA-seq run. The paper and access to the data can be found at this !link{https://0-www-ncbi-nlm-nih-gov.brum.beds.ac.uk/geo/query/acc.cgi?acc=GSE198520}. This data was generated from synovial fluid collected from inflamed joints of patients with rheumatoid arthritis before and after treatment with a TNF-a blocker, a common treatment for this disease.
+Let's read in some publicly available data from a real RNA-seq run. The paper and access to the data can be found at this link [https://0-www-ncbi-nlm-nih-gov.brum.beds.ac.uk/geo/query/acc.cgi?acc=GSE198520]. This data was generated from synovial fluid collected from inflamed joints of patients with rheumatoid arthritis before and after treatment with a TNF-a blocker, a common treatment for this disease.
 
 ``` R {cmd}
 setwd("your_path/QBS103/data")
