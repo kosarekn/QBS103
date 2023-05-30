@@ -62,9 +62,9 @@ Shell scripting also allows for fluid transitions between programming languages,
 
 In the terminal environment it is easy to update the software package if it crashes or times out on while processing your data. You also have access to the full suite of possibilities intended by the software developer by interacting with the software through the CLI. This enables more flexibility in your analysis and the ability to leverage options that are optimal for processing your dataset. Lastly when the software does crash there is generally an error message or a log file explaining what process caused the crash. Mitigating these issues requires a little "google-fu" on your part combing through stack exchange messages where previous users of the same software got the same error message and have implemented various fixes
 
-##The Bash Shell
+## The Bash Shell
 
-#The Absolute Basics
+# The Absolute Basics
 
 There are different types of Unix shells, however the most popular is Bash (the Bourne Again Shell), which is also the most common on Linux systems. Since the majority of participants will be using the Bash shell, and this is the default shell used on Dartmouth's high performance computing system (which we will be using), this lesson will introduce the Shell through using the Bash shell, however most, if not all, content should be transferable to other Unix shells.
 
@@ -107,7 +107,7 @@ cd /Users/noellekosarek/Desktop/project5/code/
 ```
 The path `/Users/noellekosarek/Desktop/project5/code/` refers specifically to the code directory in project5. Each directory and sub-directory in the path are separated by the forward slash `/` to indicate the path through the directories to the directory of interest. You will need to submit the location of the files you would like to analyze using a path when you run bioinformatic software.
 
-##Absolute vs. Relative Paths
+## Absolute vs. Relative Paths
 
 The command `pwd`returns the absolute path to your current working directory, the list of all directories and subdirectories to the get from the current directory to the root or home directory. You can see that absolute paths can get long and unwieldy, especially if you have very detailed or long directory names.
 
@@ -132,7 +132,7 @@ By default, your terminal application will start your current directory as your 
 cd ~
 ```
 
-##Logging on to Dartmouth's Discovery Cluster
+## Logging on to Dartmouth's Discovery Cluster
 
 Most NGS data analysis will require a lot of memory and computing power, more than most laptops can handle efficiently. For these analyses, using a high performance compute (HPC) cluster is often necessary. A cluster is a collection of compute resources, called nodes, that are accessed remotely through your local machine. You can leverage these resources for both data storage and data processing. These compute resources work together as a single system.
 
@@ -149,7 +149,7 @@ netID@discovery.dartmouth.edu's password:
 (base) [netID@discovery7 ~]$
 ```
 
-##Customizing Your Environment
+## Customizing Your Environment
 The command line environment describes a collection of variables that have been defined for you to provide context for the commands that you run. These are referred to as environment variables. The `env` command will show all environment variables available in the current shell. Try that now:
 
 ```bash{cmd}
@@ -314,7 +314,7 @@ rm all_counts.copy.txt
 
 You will notice that before the file was deleted you were asked if you were sure you wanted this file deleted. You want to be careful not to remove files that you did not create if you are working in shared directories. If you want to bypass this checkpoint, you can use the `-f` flag with `rm -f` to force the removal of a file, but be careful with this, as there is no Trash equivalent in the shell.
 
-##Manipulating File Contents
+## Manipulating File Contents
 
 Some commands enable you to manipulate and subset files based on specific parameters. One useful example is the cut command, which allows you to 'cut' a file based on the options you select, such as the `-f` option, which corresponds to tab delimited fields. We could use `cut` to obtain read counts for only the first 5 samples in all_counts.txt.
 
