@@ -62,9 +62,9 @@ Shell scripting also allows for fluid transitions between programming languages,
 
 In the terminal environment it is easy to update the software package if it crashes or times out on while processing your data. You also have access to the full suite of possibilities intended by the software developer by interacting with the software through the CLI. This enables more flexibility in your analysis and the ability to leverage options that are optimal for processing your dataset. Lastly when the software does crash there is generally an error message or a log file explaining what process caused the crash. Mitigating these issues requires a little "google-fu" on your part combing through stack exchange messages where previous users of the same software got the same error message and have implemented various fixes
 
-## The Bash Shell
+# The Bash Shell
 
-# The Absolute Basics
+## The Absolute Basics
 
 There are different types of Unix shells, however the most popular is Bash (the Bourne Again Shell), which is also the most common on Linux systems. Since the majority of participants will be using the Bash shell, and this is the default shell used on Dartmouth's high performance computing system (which we will be using), this lesson will introduce the Shell through using the Bash shell, however most, if not all, content should be transferable to other Unix shells.
 
