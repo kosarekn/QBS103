@@ -50,7 +50,7 @@ number_vector <- c(5,5,55,555555,555,55555,5,5,555555555,55,55,555,5,5,55555555,
 
 10) Report the factors of the levels in the below vector.
 ```{r}
-
+smoking_status <- c("Never Smoker", "Current Smoker","Former Smoker","Former Smoker","Never Smoker","Never Smoker","Never Smoker","Current Smoker","Former Smoker","Former Smoker")
 ```
 
 11) Below I have supplied you with a list of vectors containing the names of foods. Add logical names to each of the vectors in the list (eg. "Meats","Veggies", "Grains","Fruit"). Access the second vector in the lists. Return the type of items in this vector.
