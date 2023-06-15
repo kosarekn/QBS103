@@ -17,8 +17,46 @@ my_vector <- c(3.14, "pie", 3)
 my_floats <- c(1.67, 1.11, 2.25, 8.88, 6.67, 104874587645776.2)
 ```
 
-4)
+4) The vector of words was taken from a 2020 Science article about rheumatoid arthritis (RA) associated joint damage. If you are interested in accessing the whole article it can be found [here](https://www.science.org/doi/10.1126/sciadv.abd2688). Using this vector of word and your recently acquired programming skills, select the word "rheumatoid" and print it out.
 
 ```{r}
-wilson_story <- c("Professor", "Kosarek's", "rabbit,","Wilson," "stumbled", "upon", "a","magnificent" "field" of "carrots." Excitement filled Wilson's "heart" as he hurried to share the news with his "rabbit" "friends." They gathered, their "noses twitching" with anticipation. Wilson, the "carrot-loving" host, declared a "carrot party." Laughter filled the air as the rabbits feasted on the "juicy" "delights." Crunching sounds echoed as they savored each "bite." Bellies full and spirits high, they bid their farewells. Wilson watched them "hop" away, feeling grateful for the "carrot-filled" memories. The field of carrots became a cherished "meeting" place, where joy and friendship bloomed with every "carrot party" they celebrated.)
+arthritis <- c("Formation", "of", "autoantibodies", "to", "carbamylated", "proteins", "(anti-CarP)", "is", "considered", "detrimental", "in", "the", "prognosis", "of", "erosive", "rheumatoid", "arthritis", "(RA).", "The", "source", "of", "carbamylated", "antigens", "and", "the", "mechanisms", "by", "which", "anti-CarP", "antibodies", "promote", "bone", "erosion", "in", "RA", "remain", "unknown.", "NA", "Here,", "we", "find", "that", "neutrophil", "extracellular", "traps", "(NETs)", "externalize", "carbamylated", "proteins", "and", "that", "RA", "subjects", "develop", "autoantibodies", "against", "carbamylated", "NET", "(cNET)", "antigens", "that,", "in", "turn,", "correlate", "with", "levels", "of", "anti-CarP.", "Transgenic", "mice", "expressing", "the", "human", "RA", "shared", "epitope", "(HLADRB1*", "04:01)", "immunized", "with", "cNETs", "develop", "antibodies", "to", "citrullinated", "and", "NA", "carbamylated", "proteins.", "Furthermore,", "anti–carbamylated", "histone", "antibodies", "correlate", "with", "radiographic", "bone", "erosion", "in", "RA", "subjects.", "Moreover,", "anti–carbamylated", "histone–immunoglobulin", "G", "immune", "complexes", "promote", "osteoclast", "differentiation", "and", "potentiate", "osteoclast-mediated", "NA", "matrix", "resorption.", "These", "results", "demonstrate", "that", "carbamylated", "proteins", "present", "in", "NETs", "enhance", "pathogenic", "immune", "responses", "and", "bone", "destruction,", "which", "may", "explain", "the", "association", "between", "anti-CarP", "and", "erosive", "NA", "arthritis", "in", "RA.")
+```
+
+5) From the vector in the last question, count how many NA's are present. Use coding!
+```{r}
+
+```
+
+6) Count how many numbers in the below vector are less than 10. Use coding!
+```{r}
+number_vector <- c(30, 29, 48, 10, 0, 8, 56, 77, 211, 674, 1)
+```
+
+7) Count how many times "a" is present in the below vector. Use coding!
+```{r}
+letter_vector <- c("v","a","b","g","f","a","n","m","q","a","c","w","w","i","e","y")
+```
+
+8) Count how many number in the below vector are equal to 5 or greater than 5555.
+```{r}
+number_vector <- c(5,5,55,555555,555,55555,5,5,555555555,55,55,555,5,5,55555555,5,55,5,5555,5,555,5555)
+```
+
+9) Make a vector containing any 5 items that you want. These can be of type integer, numeric, or character. Subset your vector to contain only 3 items.
+```{r}
+
+```
+
+10) Report the factors of the levels in the below vector.
+```{r}
+
+```
+
+11) Below I have supplied you with a list of vectors containing the names of foods. Add logical names to each of the vectors in the list (eg. "Meats","Veggies", "Grains","Fruit"). Access the second vector in the lists. Return the type of items in this vector.
+
+```{r}
+grocery_list <- list(c("Peaches","Bananas","Strawberries","Melon"),
+          c("Spinach","Lettuce","Carrot","Kale"),
+          c("Oreos","Chocolate Cake","Gummy Bears","Marshmellows"))
 ```
