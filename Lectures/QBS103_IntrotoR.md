@@ -14,9 +14,6 @@
 
 * R version 3.0 or higher https://cran.rstudio.com/
 * R Studio 1.3 or higher https://rstudio.com/products/rstudio/download/#download
-* Sample Data http://swcarpentry.github.io/r-novice-inflammation/setup.html
-  - Follow the instructions on the link to download and unzip the data to your desktop.
-  - Be sure to either move the data according to the instructions, or make a note of where the data is located.
 
 ## R Programming
 R is a free, open source programming language and statistical software environment, first released in 1993, that is used extensively in bioinformatics. Beyond the basic functionality included in R's standard distribution, an enormous number of packages designed to extend R's functionality for specific applications exist, representing one of R's core strengths.
