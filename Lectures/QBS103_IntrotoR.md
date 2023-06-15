@@ -341,6 +341,16 @@ x < 2 | x ==4
 x < 2 & x == 4
 ```
 
+You can also select for indices of elements in a vector using the `which` command.
+
+``` R {cmd}
+#This will return the indices of the elements in the vector that are not equal to 4
+which(x != 4)
+
+#It is also useful to use which to find out how many elements meet your parameters
+length(which(x !=4))
+```
+
 Note: When combining operators, operator precedence applies, such that operators with high precedence will be evaluated first. For example, in the above line, `x < 2` will be evaluated before `x == 4` as the `<` has greater precedence than `==`. You can explore operator precedence in R using the main page returned by `?Syntax`.
 
 Relational and logical operators can be used to subset a vector based on the values returned by the operator, and the brackets, as we did above for specific elements.
