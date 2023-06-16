@@ -18,9 +18,11 @@
 lst <- list(4, 'j', 'Y', 5, 'f', 'K', 8, 'z', 'T', 'c', 0, 'B', 2, 'm', 'X', 9, 'd', 'V', 3, 'n', 'G', 6, 'h', 'J', 2, 'p', 'O', 1, 'q', 'R', 7, 's', 'D', 2, 'l', 'N', 0, 'w', 'E', 5, 'e', 'U', 4, 'i', 'P', 1, 'a', 'H', 8, 'y', 'S', 3, 'g', 'F', 9, 'b', 'M', 6, 'k', 'L', 7)
 ```
 
-2) In the "data" folder of this repository there is a file called GSE165252_vst_PERFECT.txt. This is real RNA-seq data from a phase II clinical trial investigating the impact of combined impact PD-L1 inhibitor (atezolizumab) and neoadjuvant chemoradiotherapy on resectable esophageal adenocarcinoma patients. You can find a link to the data on GEO here: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165252. You can read about this study here: https://aacrjournals.org/clincancerres/article/27/12/3351/671431/Neoadjuvant-Chemoradiotherapy-Combined-with. Download the  GSE165252_vst_PERFECT.txt fiel to your local machine.
+2) In the "data" folder of this repository there is a file called GSE165252_vst_PERFECT.txt. This is real RNA-seq data from a phase II clinical trial investigating the impact of combined impact PD-L1 inhibitor (atezolizumab) and neoadjuvant chemoradiotherapy on resectable esophageal adenocarcinoma patients. You can find a link to the data on GEO here: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165252. You can read about this study here: https://aacrjournals.org/clincancerres/article/27/12/3351/671431/Neoadjuvant-Chemoradiotherapy-Combined-with. Download the  GSE165252_vst_PERFECT.txt file to your local machine.
   a) Read in this file. Make sure you take into account that the first row contains Ensembl IDs (gene names)!
   b) How many samples are in this data set?
   c) How many genes are in this data set?
   d) Make a histogram of the expression values of a gene of your choosing from this data set.
   e) Subset this data to contain only their first three samples and first 2000 genes. Write this subset to a file called "eso_sub.csv".
+
+  3) Write a function call "my_first_function". The function should take the following vector: my_vector <- c(1,2,3,4,5,6,7,8,9). Your function should sort the numbers in my_vector into two categories: less than or equal to 5 or greater than 5. Hint: You can take a look at for loops and if/else statements to complete this question!
