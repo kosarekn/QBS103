@@ -68,4 +68,5 @@ while (basketball$points >= 4000){
 
 #Functions
 #If/else Statements
-#Simple Plotting
+#Basic Statistics
+#Simple Plotting of statistics - looking at distribution 
