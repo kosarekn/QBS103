@@ -35,7 +35,7 @@ for (i in 1:3){
 }
 ```
 
-You may be wondering why we would want to save our result to a variable and then print it. Seems redundant, but we may need to conduct further tasks on our y varibale. Let's say we want to divide y by 3 and print that result. We could write something like this:
+You may be wondering why we would want to save our result to a variable and then print it. Seems redundant, but we may need to conduct further tasks on our y variable. Let's say we want to divide y by 3 and print that result. We could write something like this:
 
 ```R{cmd}
 x = 2
@@ -45,7 +45,27 @@ for (i in 1:3){
 }
 ```
 
-Assigning variables in loops provides us the flexibility to carry out more complicated tasks.
+Assigning variables in loops provides us the flexibility to carry out more complicated tasks and refer to the variables created in the loop later in our code.
+
+#While Loops
+
+While loops are another common type of loop in R that allow us to execute tasks so long as the statement we set is true (Fig. 2). For example, in an ordered list of professional basketball players points for the season we might want to print the list of players with over 4000 points.
+
+![while_flowdiagram](/images/while_flowdiagram.png)
+
+```{r}
+players <- c("LeBron James","Kevin Durant","Stephen Curry","James Harden","Klay Thompson")
+points <- c(8023, 4878, 3966, 3637, 3032)
+
+basketball <- data.frame(players, points)
+
+head(basketball)
+
+while (basketball$points >= 4000){
+  print(basketball$players)
+}
+```
+
 #Functions
 #If/else Statements
 #Simple Plotting
