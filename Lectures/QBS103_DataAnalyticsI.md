@@ -1,10 +1,10 @@
-## Data Analytics with R
-# Refresh: What Is A Loop?
+# Data Analytics with R
+## Refresh: What Is A Loop?
 As you being your first foray into R programming, you may find that you need to conduct repetitive tasks such as printing out the third item of ten different lists. You could begin the tedious exercise of picking out the third item in each of the ten lists by hand, but let's be honest, you have better things to. There true crime documentaries to watch on Netflix. Your favorite author just came out with a new book. You need to train your dog or cat to make an adorable face on command. Good news, R can free up this time with loops!
 
 In a loop you can define a set of instructions that R will execute a certain number of times or over a set of variables. There are three types of loops in R: the for loop, the while loop. and the repeat loop. The for loop is the most commonly used and dynamic loop. Let's begin there!
 
-# For Loops
+## For Loops
 
 The simplest implementation of a for loop is to conduct a task x number of times.
 
@@ -51,7 +51,7 @@ for (i in 1:3){
 
 Assigning variables in loops provides us the flexibility to carry out more complicated tasks and refer to the variables created in the loop later in our code.
 
-# While Loops
+## While Loops
 
 While loops are another common type of loop in R that allow us to execute tasks so long as the statement we set is true (Fig. 2). For example, in an ordered list of professional basketball players points for the season we might want to print the list of players with over 4000 points.
 
@@ -70,7 +70,7 @@ while (basketball$points >= 4000){
 }
 ```
 
-# Repeat Loops
+## Repeat Loops
 The final type of loop we will cover in this course is a repeat loop. In a repeat loop there is no condition check placed before the loop as in a while loop. Instead a condition check is placed within the loop and a break is uitilized to escape the loop (Fig. 3).
 
 ![repeat-loop](/images/repeat-loop.jpg)
@@ -84,10 +84,11 @@ repeat{
   break
 }
 ```
-# Refresh: Functions
+## Refresh: Functions
 
 Functions define a set of tasks we wish to apply to
-# Leveraging Loops and Functions to Analyze Data
+
+## Leveraging Loops and Functions to Analyze Data
 Now that we have completed a quick review of loops and functions, we can use our new knowledge to read in several files at once and conduct some interesting analysis on our data. We have provided you with five files containing meta data information for 5 separate studies.
 
 Let's list all of these files in our Data_Analytics_1_Lesson_Data directory in the /data directory on GitHub.
