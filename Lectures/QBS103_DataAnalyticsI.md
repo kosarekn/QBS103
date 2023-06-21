@@ -55,7 +55,7 @@ Assigning variables in loops provides us the flexibility to carry out more compl
 
 While loops are another common type of loop in R that allow us to execute tasks so long as the statement we set is true (Fig. 2). For example, in an ordered list of professional basketball players points for the season we might want to print the list of players with over 4000 points.
 
-![while_flowdiagram](/images/while_flowdiagram.jpeg)
+![while_flowdiagram](/images/while_flowdiagram.png)
 
 ```{r}
 players <- c("LeBron James","Kevin Durant","Stephen Curry","James Harden","Klay Thompson")
@@ -73,7 +73,7 @@ while (basketball$points >= 4000){
 # Repeat Loops
 The final type of loop we will cover in this course is a repeat loop. In a repeat loop there is no condition check placed before the loop as in a while loop. Instead a condition check is placed within the loop and a break is uitilized to escape the loop (Fig. 3).
 
-![repeat-loop](/images/repeat-loop.jpeg)
+![repeat-loop](/images/repeat-loop.jpg)
 
 ```{r}
 x <- 100
