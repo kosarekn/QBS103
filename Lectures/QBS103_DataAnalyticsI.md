@@ -86,7 +86,7 @@ repeat{
 ```
 ## Refresh: Functions
 
-Functions define a set of tasks we wish to apply to
+Functions define a set of tasks we wish to apply. The greatest benefit of writing a function is that it can be applied beyond a single use.
 
 ## Leveraging Loops and Functions to Analyze Data
 Now that we have completed a quick review of loops and functions, we can use our new knowledge to read in several files at once and conduct some interesting analysis on our data. We have provided you with five files containing meta data information for 5 separate studies.
