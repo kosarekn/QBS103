@@ -1,0 +1,85 @@
+Good Day QBS 103 Crew!
+
+Please work in groups to solve the problems provided in our very first in class assignment. If you complete this early, you are free to leave before our class time runs out. If you are unable to complete these exercises before the end of class, you can continue at home, though it is not required that you do so. These will not be graded!
+
+1) Below I have generated a beautiful vector of "things" for you. Using code, can you tell me the type of data of each "thing" in the vector?
+```{r setup, include=TRUE}
+my_vector <- c(3.14, "pie", 3)
+class(my_vector[1])
+class(my_vector[2])
+class(my_vector[3])
+```
+
+2) Create a nested vector in the code chunk below. This vector should contain one vector of integers, one vector of float numbers, and one vector of strings or characters.
+```{r}
+my_vector <- c(c(1,2,3), c(1.11,2.22,3.33),c("a","b","c"))
+```
+
+3) I have provided you with a vector of float numbers. Please convert these float numbers to integers and save the output vector to a vector called "my_integers".
+```{r}
+my_floats <- c(1.67, 1.11, 2.25, 8.88, 6.67, 104874587645776.2)
+
+my_integers <- as.integer(my_floats)
+my_integers
+```
+
+4) The vector of words was taken from a 2020 Science article about rheumatoid arthritis (RA) associated joint damage. If you are interested in accessing the whole article it can be found [here](https://www.science.org/doi/10.1126/sciadv.abd2688). Using this vector of word and your recently acquired programming skills, select the word "rheumatoid" and print it out.
+
+```{r}
+arthritis <- c("Formation", "of", "autoantibodies", "to", "carbamylated", "proteins", "(anti-CarP)", "is", "considered", "detrimental", "in", "the", "prognosis", "of", "erosive", "rheumatoid", "arthritis", "(RA).", "The", "source", "of", "carbamylated", "antigens", "and", "the", "mechanisms", "by", "which", "anti-CarP", "antibodies", "promote", "bone", "erosion", "in", "RA", "remain", "unknown.", NA, "Here,", "we", "find", "that", "neutrophil", "extracellular", "traps", "(NETs)", "externalize", "carbamylated", "proteins", "and", "that", "RA", "subjects", "develop", "autoantibodies", "against", "carbamylated", "NET", "(cNET)", "antigens", "that,", "in", "turn,", "correlate", "with", "levels", "of", "anti-CarP.", "Transgenic", "mice", "expressing", "the", "human", "RA", "shared", "epitope", "(HLADRB1*", "04:01)", "immunized", "with", "cNETs", "develop", "antibodies", "to", "citrullinated", "and", NA, "carbamylated", "proteins.", "Furthermore,", "anti–carbamylated", "histone", "antibodies", "correlate", "with", "radiographic", "bone", "erosion", "in", "RA", "subjects.", "Moreover,", "anti–carbamylated", "histone–immunoglobulin", "G", "immune", "complexes", "promote", "osteoclast", "differentiation", "and", "potentiate", "osteoclast-mediated", NA, "matrix", "resorption.", "These", "results", "demonstrate", "that", "carbamylated", "proteins", "present", "in", "NETs", "enhance", "pathogenic", "immune", "responses", "and", "bone", "destruction,", "which", "may", "explain", "the", "association", "between", "anti-CarP", "and", "erosive", NA, "arthritis", "in", "RA.")
+
+x <- which(arthritis == "rheumatoid")
+arthritis[x]
+```
+
+5) From the vector in the last question, count how many NA's are present. Use coding!
+```{r}
+length(which(is.na(arthritis) == TRUE))
+```
+
+6) Count how many numbers in the below vector are less than 10. Use coding!
+```{r}
+number_vector <- c(30, 29, 48, 10, 0, 8, 56, 77, 211, 674, 1)
+length(which(number_vector < 10))
+```
+
+7) Count how many times "a" is present in the below vector. Use coding!
+```{r}
+letter_vector <- c("v","a","b","g","f","a","n","m","q","a","c","w","w","i","e","y")
+
+length(which(letter_vector == "a"))
+```
+
+8) Count how many number in the below vector are equal to 5 or greater than 5555.
+```{r}
+number_vector <- c(5,5,55,555555,555,55555,5,5,555555555,55,55,555,5,5,55555555,5,55,5,5555,5,555,5555)
+
+result <- length(which(number_vector == 5 | number_vector > 5555))
+result
+```
+
+9) Make a vector containing any 5 items that you want. These can be of type integer, numeric, or character. Subset your vector to contain only 3 items.
+```{r}
+candy <- c("Cadbury Milk Chocolate Bar","Snickers","Gummy Bears","Sweet Tarts","Jolly Ranchers")
+
+candy_sub <- candy[1:3]
+candy_sub
+```
+
+10) Report the factors of the levels in the below vector.
+```{r}
+smoking_status <- c("Never Smoker", "Current Smoker","Former Smoker","Former Smoker","Never Smoker","Never Smoker","Never Smoker","Current Smoker","Former Smoker","Former Smoker")
+
+levels(factor(smoking_status))
+```
+
+11) Below I have supplied you with a list of vectors containing the names of foods. Add logical names to each of the vectors in the list (eg. "Meats","Veggies", "Grains","Fruit"). Access the second vector in the lists. Return the type of items in this vector.
+
+```{r}
+grocery_list <- list(c("Peaches","Bananas","Strawberries","Melon"),
+          c("Spinach","Lettuce","Carrot","Kale"),
+          c("Oreos","Chocolate Cake","Gummy Bears","Marshmellows"))
+names(grocery_list) <- c("Fruits","Veggies","Dessert")
+grocery_list[[2]]
+str(grocery_list)
+```
