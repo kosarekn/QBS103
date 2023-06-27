@@ -86,7 +86,57 @@ repeat{
 ```
 ## Refresh: Functions
 
-Functions define a set of tasks we wish to apply. The greatest benefit of writing a function is that it can be applied beyond a single use.
+Functions define a set of tasks we wish to apply in the same order each time the function is called. The greatest benefit of writing a function is that it can be applied beyond a single use. We use the following structure to create our own functions:
+
+```{r}
+the_name_of_my_function <- function(thing applied to function){
+  things we want the function to do to the thing applied to the function
+}
+```
+
+This is a general schema for a function. We can execute simple commands with a function such as the one below:
+
+```{r}
+my_fun <- function(a_string){
+  print(a_string)
+}
+my_fun(a_string = "Coding is fun!")
+```
+
+You can see from the above function that we can set a_string to any string we want to print out, making our function generalizable and dynamic. We can execute more complicated commands like the one below, in which we loop through 10 .csv files and print the first column of each .csv file to a single separate .csv file:
+
+```{r}
+###########DO NOT RUN THIS CODE IN CLASS##########
+loop_csv_files <- function() {
+  # Create an empty data frame to store the first columns
+  first_columns <- data.frame()
+
+  # Loop through 10 .csv files
+  for (i in 1:10) {
+    # Create the input file name
+    input_file <- paste0("file", i, ".csv")
+
+    # Read the .csv file
+    data <- read.csv(input_file)
+
+    # Extract the first column
+    first_column <- data[, 1]
+
+    # Add the first column to the data frame
+    first_columns <- cbind(first_columns, first_column)
+
+    # Print a message indicating the completion of each file
+    cat("Processed", input_file, "and added the first column to the data frame\n")
+  }
+
+  # Write the first columns to a single .csv file
+  write.csv(first_columns, "output.csv", row.names = FALSE)
+
+  # Print a message indicating the completion of the task
+  cat("Saved the first columns of all files to output.csv\n")
+}
+
+```
 
 ## Leveraging Loops and Functions to Analyze Data
 Now that we have completed a quick review of loops and functions, we can use our new knowledge to read in several files at once and conduct some interesting analysis on our data. We have provided you with five files containing meta data information for 5 separate studies.
