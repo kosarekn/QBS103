@@ -1,0 +1,93 @@
+---
+title: "Intro_to_R_Class_Exercises_2"
+output: pdf_document
+date: "2023-06-25"
+---
+Good Afternoon QBS 103 Crew!
+
+Please work in groups to solve the problems provided in our second in class problem set. If you complete this early, you are free to leave before our class time runs out. If you are unable to complete these exercises before the end of class, you can continue at home, though it is not required that you do so. These will not be graded!
+
+1) Create a count matrix with five rows and five columns. The count matrix should consist of randomly generated, whole numbers between 0 and 20. 
+```{r setup, include=TRUE}
+num.vector <- c(0:20)
+
+count.vector <- sample(num.vector, size = 50, replace = TRUE)
+count.vector
+
+count.matrix <- matrix(count.vector, ncol=5, nrow=5, byrow = TRUE)
+count.matrix
+```
+
+2) Add the following row names to the rows in your count matrix: "PTEN","BRCA1", "TP53", "EGFR","IL6". Add the following column names to the columns in your count matrix: "Participant 106","Participant 107","Participant 108","Participant 109","Participant 110".
+```{r}
+rownames(count.matrix) <- c("PTEN","BRCA1", "TP53", "EGFR","IL6")
+colnames(count.matrix) <- c("Participant 106","Participant 107","Participant 108","Participant 109","Participant 110")
+count.matrix
+```
+
+3) Print the column 3 row 5.
+```{r}
+count.matrix[5,3]
+```
+
+4) We can add a column to our matrix with a function called cbind. cbind is used, for example, as follows: MatrixB <- cbind(MatrixA, c(10,11,12)), where c(10,11,12) is the column you wish to add. Add the below vector as a column to your count matrix.
+```{r}
+`Participant 111` <- c(1,2,3,4,5)
+count.matrix <- cbind(count.matrix, `Participant 111`)
+count.matrix
+```
+
+7) Now try to add this column to to your count matrix. What happenens and why?
+```{r}
+#Everything becomes a character! 
+`Participant 112` <- c("a","b","c","d","e")
+count.matrix <- cbind(count.matrix, `Participant 112`)
+count.matrix
+```
+9) Ok, let's stick with numerics. Generate a new count matrix with the code below.
+```{r}
+num.vector <- c(0:20)
+
+count.vector <- sample(num.vector, size = 50, replace = TRUE)
+
+count.matrix <- matrix(count.vector, ncol=5, nrow=5, byrow = TRUE)
+
+rownames(count.matrix) <- c("PTEN","BRCA1", "TP53", "EGFR","IL6")
+colnames(count.matrix) <- c("Participant 106","Participant 107","Participant 108","Participant 109","Participant 110")
+count.matrix
+```
+
+8) Convert your count matrix to a data frame.
+```{r}
+count.df <- as.data.frame(count.matrix)
+count.df
+```
+
+9) Create a data frame with three columns: Participant ID, Age, and Disease Status (Case or Control). The data frame should contain 3 participants.
+```{r}
+df <- data.frame(subject_id = c("Subject_1","Subject_2","Subject_3"),
+                 age = c(45, 83, 38),
+                 disease_status = c("Case","Control","Control"))
+```
+
+10) Get the Age column.
+```{r}
+df[, c("age")]
+```
+
+11) Create a function called "my_first_function" that loops through the disease column in the data frame you created. If the disease status is "Case", have your function print the subject_id for that individual. If the disease status is a "Control", have your function print the age for that individual.
+```{r}
+i <- 1
+my_first_function <- function(df){
+  for (sub in df$disease_status){
+    if (sub == "Case"){
+      print(df$subject_id[i])
+    }else{
+      print(df$age[i])
+    }
+    i <- i + 1
+  }
+}
+
+my_first_function(df)
+```
