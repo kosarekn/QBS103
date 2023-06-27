@@ -573,7 +573,7 @@ If/else statements in R allow us to create decision making programs based on a t
 ``` R {cmd}
 decision <- "cake" # "pie"
 
-if (decision = "cake"){
+if (decision == "cake"){
   print("You should buy flour and eggs at the grocery store")
 } else{
   print("You should buy crust and apples at the grocery store.")
