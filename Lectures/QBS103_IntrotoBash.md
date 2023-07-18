@@ -235,7 +235,7 @@ nano ~/.bash_profile
 # copy and paste the definition above
 ###############
 
-# Check your location on the cluster
+# Check your location on your machine
 pwd
 
 # List the contents of your directory
