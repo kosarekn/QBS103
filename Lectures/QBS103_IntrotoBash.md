@@ -177,7 +177,7 @@ Note: You will notice I'm using all caps for my variables, this isn't required b
 We might want run the command ls -lah command to show files in a list format, including all hidden files, and with file sizes in human readable format.
 
 ```bash{cmd}
-# save to variable
+# return files
 ls -lah
 ```
 
