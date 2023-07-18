@@ -295,7 +295,7 @@ You can also use the `mv` command to move a file to a new location. Let's move t
 # Move the all_counts.copy.txt into your QBS_103 directory.
 mv ~/all_counts.copy.txt $QBS/all_counts.copy.txt
 
-#check the contents of your fundamentals_of_bioinformatics directory
+#check the contents of your directory
 ls
 ```
 
@@ -429,8 +429,8 @@ Now let's use some of these regular expressions in a `grep` command to see their
 
 ```bash{cmd}
 # Count the number of genes with no reads in the first four samples
-grep -P "^ENSG[0-9]*\t0\t0\t0\t0\t" all_counts.txt| wc -l
+grep "^ENSG[0-9]*\t0\t0\t0\t0\t" all_counts.txt| wc -l
 
 # Count the number of genes with no reads expressed in any of the samples
-grep -P "^ENSG[0-9]*\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0$" all_counts.txt| wc -l
+grep "^ENSG[0-9]*\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0$" all_counts.txt| wc -l
 ```
