@@ -174,14 +174,11 @@ echo $GENOME
 
 Note: You will notice I'm using all caps for my variables, this isn't required but it is good practice to indicate to yourself that you're using a variable
 
-You can also use variables to store commands to save yourself from having to type the entire command out each time. For example, we might run the command ls -lah command often (show files in a list format, including all hidden files, and with file sizes in human readable format).
+We might want run the command ls -lah command to show files in a list format, including all hidden files, and with file sizes in human readable format.
 
 ```bash{cmd}
 # save to variable
-LIST="ls -lah"
-
-# call variable to execute command
-$LIST
+ls -lah
 ```
 
 Variables created during a remote session will not persist between sessions, unless the variable is saved an environment file. These are a set of files that are executed every time you start a new bash session. These files are typically hidden, so we need to use `ls` with the `-a` flag to see them. The `.bash_profile` is an example of an environment file, we can view the contents of this file with the `cat` command.
@@ -206,8 +203,7 @@ nano `.bash_profile`
 # source the new bash_profile to add the environment variables to your current session (or start a new bash session)
 source ~/.bash_profile
 
-# now run the command as we did above
-$LIST
+ls -lah
 ```
 
 Now `$LIST` will be set as an environment variable every time we start a new bash session terminal.
