@@ -30,7 +30,7 @@ Shell scripting also allows for fluid transitions between programming languages,
 <table>
 <thead>
   <tr>
-  <th style="text-align:center;"> Advantages of Using The Shell </th>
+  <th colspan=3>style="text-align:center;"> Advantages of Using The Shell </th>
   </tr>
 </thead>
  <thead>
