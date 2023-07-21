@@ -1,0 +1,46 @@
+---
+title: "20230721_QBS103_FinalProject"
+output: pdf_document
+date: "2023-07-21"
+---
+
+```{r setup, include=TRUE}
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#READ IN DATA
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gene_matrix <- read.csv("/Users/noellekosarek/Documents/GitHub/QBS103/data/covid_genes.csv")
+metadata <- read.csv("/Users/noellekosarek/Documents/GitHub/QBS103/data/QBS103_GSE157103_series_matrix.csv")
+head(gene_matrix)
+head(metadata)
+```
+```{r}
+rownames(gene_matrix) <- gene_matrix$X
+gene_matrix <- gene_matrix[,-1]
+
+rownames(metadata) <- metadata$participant_id
+metadata <- metadata[,-1]
+
+head(gene_matrix)
+head(metadata)
+```
+```{r}
+LCN2_expression <- gene_matrix['LCN2',]
+LCN2_expression <- as.data.frame(t(LCN2_expression))
+LCN2_expression
+```
+```{r}
+metadata_LNC2_exp <- cbind(metadata, LCN2_expression)
+head(metadata_LNC2_exp)
+```
+```{r}
+metadata_LNC2_exp_male <- metadata_LNC2_exp[which(metadata_LNC2_exp$sex==" male"),]
+
+metadata_LNC2_exp_female <- metadata_LNC2_exp[which(metadata_LNC2_exp$sex==" female"),]
+
+LNC_exp_male <- metadata_LNC2_exp_male$LCN2
+LNC_exp_female <- metadata_LNC2_exp_female$LCN2
+```
+```{r}
+boxplot(LNC_exp_male, LNC_exp_female)
+```
+
