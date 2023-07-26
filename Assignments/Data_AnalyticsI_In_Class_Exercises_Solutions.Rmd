@@ -1,0 +1,93 @@
+---
+title: "Data_AnalyticsI_In_Class_Exercises"
+output: pdf_document
+date: "2023-07-26"
+---
+
+Good Afternoon QBS 103 Crew!
+I know, you are devastated that this is the last lecture I'll be teaching you this semester. I myself shed a tear just this morning. Still, we must make the most of our final class together by completing an in class assignment. This problem set will not be graded. If you complete this assignment before the class time ends, you are free to leave. If you are unable to complete this assignment before the class time runs out, you do not need to finish the assignment at home. Please feel free to reach out if you have any questions or concerns! 
+
+1) On our class GitHub in the "data" directory you will find a subdirectory called "Data_Analytics_1_In_Class_Assignment_Data". Write a function that takes the directory as an input, loops through all the files in the directory, and identifies individuals with CRP levels greater than 0.4mg/dL. Write the data for these individuals with high CRP to fiver separate files, one for each sample data file.
+```{r setup, include=TRUE}
+setwd("/Users/noellekosarek/Documents/GitHub/QBS103/data/Data_Analytics_1_In_Class_Assignment_Data")
+my_fun <- function(path_to_directory){
+  filenames <- list.files(path = path_to_directory, pattern = ".csv")
+
+  for (file in filenames){
+    data_set_name <- toString(file)
+    data_set_name <- gsub("\\..*","",data_set_name)
+    df <- data.frame()
+    the_file <- read.csv(file)
+    crp_var <- the_file$crp
+    i = 1
+    for (value in crp_var){
+     if (value >=0.4){
+        df <- rbind(df,the_file[i,])
+        i = i +1
+      }else{
+        i = i + 1
+      }
+   }
+   write.csv(df,paste0("/Users/noellekosarek/Documents/GitHub/QBS103/data/results/",data_set_name,"_high_crp.csv"), row.names = FALSE)
+  }
+}
+
+
+path_to_directory = "/Users/noellekosarek/Documents/GitHub/QBS103/data/Data_Analytics_1_In_Class_Assignment_Data"
+my_fun(path_to_directory)
+```
+
+2) Write a function that takes the "Data_Analytics_1_In_Class_Assignment_Data" directory and generates one set box plots for male and female CRP levels for all five sets of sample data.
+```{r}
+library(ggplot2)
+library(harrypotter)
+
+setwd("/Users/noellekosarek/Documents/GitHub/QBS103/data/Data_Analytics_1_In_Class_Assignment_Data")
+
+my_fun <- function(path_to_directory){
+  filenames <- list.files(path = path_to_directory, pattern = ".csv")
+
+  big_df <- data.frame()
+  df <- data.frame()
+  i = 1
+  for (file in filenames){
+      the_file <- read.csv(file)
+     sex <- the_file$sex
+     crp <- the_file$crp
+     df <- data.frame(sex,crp)
+     big_df <-rbind(big_df,df)
+     i = i + 1
+}
+
+  ggplot(big_df, aes(x = sex, y = crp, fill = sex))+ xlab("Sex")+ ylab("CRP mg/dL") + ggtitle("CRP Level by Sex")+ geom_boxplot() + scale_fill_hp_d(option = "lunalovegood")
+}
+
+path_to_directory = "/Users/noellekosarek/Documents/GitHub/QBS103/data/Data_Analytics_1_In_Class_Assignment_Data"
+
+my_fun(path_to_directory)
+
+```
+3) Write a function that takes the "Data_Analytics_1_In_Class_Assignment_Data" and plots a scatterplot of age and crp for each sample data set. You should end up with five scatter plots. Color the scatter plot dots  by disease status. 
+```{r}
+library(harrypotter)
+setwd("/Users/noellekosarek/Documents/GitHub/QBS103/data/Data_Analytics_1_In_Class_Assignment_Data")
+
+fun_stats_pretty_plots <- function(path_to_directory){
+  i = 1
+  filenames <- list.files(path = path_to_directory, pattern = ".csv")
+  for (file in filenames){
+    data_set_name <- toString(file)
+    data_set_name <- gsub("\\..*","",data_set_name)
+    the_file <- read.csv(file)
+    age_var <- the_file$age
+    crp_var <- the_file$crp
+    disease_status <- the_file$disease_status
+    df <- data.frame(age_var,crp_var,disease_status)
+    
+    print(ggplot(df, aes(x = age_var, y = crp_var, color = disease_status)) + geom_point() + xlab("Age") + ylab("CRP mg/dL") + guides(colour = guide_legend(title = "Disease Status"))) 
+  }
+}
+
+fun_stats_pretty_plots(path_to_directory = "/Users/noellekosarek/Documents/GitHub/QBS103/data/Data_Analytics_1_In_Class_Assignment_Data")
+```
+

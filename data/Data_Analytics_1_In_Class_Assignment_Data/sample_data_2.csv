@@ -1,0 +1,101 @@
+"participant","age","sex","race","SES","disease_status","crp"
+1,51,"Female","Black","High","Diseased",0.332668836660484
+2,59,"Female","Other","Medium","Diseased",0.378619559146876
+3,45,"Male","Hispanic/Latino","High","Diseased",0.294830912163019
+4,32,"Female","White","High","Diseased",0.160866475516343
+5,52,"Female","Asian","Medium","Not Disease",0.416578912113775
+6,47,"Male","Other","Low","Not Disease",0.310542719391451
+7,65,"Male","White","Low","Diseased",0.491317943564214
+8,63,"Female","Hispanic/Latino","Medium","Diseased",0.341740770735017
+9,56,"Male","White","High","Not Disease",0.382403685936968
+10,55,"Male","Hispanic/Latino","Medium","Diseased",0.299131642813252
+11,50,"Female","White","Low","Diseased",0.34191341418915
+12,34,"Female","Black","Medium","Diseased",0.29733941354554
+13,46,"Male","White","Low","Not Disease",0.365570943374852
+14,56,"Female","Black","Medium","Not Disease",0.335373626870124
+15,50,"Female","Black","High","Not Disease",0.344101767417495
+16,38,"Female","Black","High","Not Disease",0.32720731319157
+17,51,"Male","Other","Low","Not Disease",0.248931206552874
+18,46,"Male","White","High","Diseased",0.226517258262517
+19,55,"Male","Hispanic/Latino","High","Not Disease",0.373359256692382
+20,61,"Male","Other","Low","Not Disease",0.341032608175635
+21,48,"Male","Black","Medium","Diseased",0.169873306543202
+22,51,"Female","Other","Low","Not Disease",0.3851829780105
+23,46,"Female","Asian","Medium","Diseased",0.271869775354791
+24,64,"Male","Other","Low","Diseased",0.154339241732954
+25,34,"Male","Other","High","Not Disease",0.229901148733007
+26,51,"Female","Black","Medium","Not Disease",0.199522736746273
+27,56,"Female","Black","High","Diseased",0.376822306500483
+28,49,"Female","Black","Low","Not Disease",0.303287568263695
+29,57,"Male","Black","Low","Not Disease",0.458120357000838
+30,53,"Female","Black","Medium","Diseased",0.56958800054769
+31,52,"Female","Asian","High","Not Disease",0.366963228596208
+32,50,"Male","Hispanic/Latino","Low","Not Disease",0.35290863148896
+33,46,"Male","Black","High","Diseased",0.404230372002676
+34,49,"Female","Asian","Low","Not Disease",0.182057948940221
+35,47,"Female","Asian","Low","Not Disease",0.210848188822207
+36,43,"Female","Black","Medium","Not Disease",0.158294868657067
+37,44,"Male","Asian","Low","Diseased",0.158363672838233
+38,62,"Male","Hispanic/Latino","High","Not Disease",0.380032596652743
+39,45,"Male","Black","Medium","Not Disease",0.298959885234731
+40,39,"Male","Other","High","Not Disease",0.320456745722692
+41,62,"Male","Black","Medium","Diseased",0.281333458725351
+42,49,"Male","Asian","High","Not Disease",0.346493394062897
+43,36,"Female","Hispanic/Latino","High","Not Disease",0.358289051375481
+44,72,"Male","Hispanic/Latino","Low","Not Disease",0.391298913320119
+45,48,"Female","Other","Medium","Not Disease",0.164577322063663
+46,36,"Male","Other","Low","Diseased",0.566596040132253
+47,48,"Female","Asian","Low","Not Disease",0.333470579201824
+48,80,"Male","White","High","Diseased",0.486047416817166
+49,43,"Male","Asian","High","Not Disease",0.194486445005985
+50,42,"Male","White","High","Not Disease",0.211312713211757
+51,52,"Female","Black","Low","Diseased",0.357565021384522
+52,49,"Female","Asian","Medium","Diseased",0.334057666746612
+53,52,"Male","Hispanic/Latino","High","Diseased",0.317878685304106
+54,41,"Male","Black","High","Not Disease",0.329571116136208
+55,55,"Female","Hispanic/Latino","Medium","Diseased",0.114516134645691
+56,56,"Female","Asian","Low","Diseased",0.411727294795706
+57,48,"Female","Other","High","Not Disease",0.310044537644388
+58,62,"Female","Asian","Medium","Diseased",0.262427016226653
+59,43,"Female","Other","Low","Diseased",0.232586114182779
+60,50,"Female","Asian","Medium","Diseased",0.421297703325985
+61,48,"Male","Asian","High","Diseased",0.150297650604815
+62,50,"Male","Black","Low","Diseased",0.317509246944067
+63,56,"Female","Black","High","Diseased",0.0893897046683974
+64,56,"Female","Asian","Low","Diseased",0.255890449361469
+65,33,"Female","Asian","Low","Diseased",0.306326424377051
+66,57,"Male","Hispanic/Latino","Medium","Not Disease",0.377356996563821
+67,44,"Female","Asian","High","Diseased",0.185629134095189
+68,56,"Male","Black","Low","Diseased",0.175521407545909
+69,46,"Male","Hispanic/Latino","Low","Diseased",0.308135681783644
+70,57,"Male","Hispanic/Latino","High","Not Disease",0.405077003684412
+71,48,"Male","Black","Low","Not Disease",0.310099729881916
+72,48,"Male","White","Medium","Not Disease",0.451068591915755
+73,37,"Male","Black","High","Not Disease",0.38862742747287
+74,54,"Female","Black","Low","Diseased",0.226317673163049
+75,37,"Female","White","Medium","Not Disease",0.373582646529098
+76,60,"Female","Asian","Low","Not Disease",0.412942839605917
+77,57,"Female","White","High","Diseased",0.235166250696997
+78,64,"Male","Hispanic/Latino","High","Diseased",0.280229297125676
+79,47,"Female","Other","Medium","Not Disease",0.210659172456228
+80,31,"Female","Black","Medium","Diseased",0.41628630612569
+81,80,"Female","Asian","High","Not Disease",0.340930489706396
+82,47,"Male","Asian","Medium","Diseased",0.210231579006398
+83,55,"Male","Black","Medium","Not Disease",0.350402208834174
+84,49,"Female","Other","Medium","Not Disease",0.451046756365346
+85,37,"Male","Hispanic/Latino","Low","Not Disease",0.18260695525946
+86,46,"Male","Hispanic/Latino","High","Not Disease",0.210918414123747
+87,44,"Female","Other","Low","Diseased",0.178672477664758
+88,42,"Male","Asian","Low","Not Disease",0.29020526453513
+89,46,"Male","Other","Medium","Diseased",0.259375177341398
+90,67,"Male","Hispanic/Latino","High","Diseased",0.32537723179966
+91,53,"Female","Black","Low","Not Disease",0.222893458257311
+92,48,"Female","Hispanic/Latino","Medium","Diseased",0.2893495215816
+93,52,"Female","Asian","High","Not Disease",0.229660347418538
+94,46,"Female","Hispanic/Latino","Low","Diseased",0.422011040683909
+95,50,"Male","Asian","Medium","Diseased",0.304427562914588
+96,46,"Male","Asian","High","Diseased",0.432725105910732
+97,60,"Female","Asian","High","Diseased",0.0850165143302672
+98,51,"Male","Asian","Medium","Not Disease",0.213882434964002
+99,64,"Female","Hispanic/Latino","Low","Diseased",0.34367672195004
+100,42,"Female","Asian","High","Not Disease",0.114675536060013

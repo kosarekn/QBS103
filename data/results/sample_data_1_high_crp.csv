@@ -1,0 +1,18 @@
+"participant","age","sex","race","SES","disease_status","crp"
+2,41,"Male","Hispanic/Latino","Low","Not Disease",0.449048380096783
+18,48,"Female","Hispanic/Latino","Low","Not Disease",0.531097693217826
+22,42,"Male","Black","High","Not Disease",0.407487211412856
+24,41,"Female","Hispanic/Latino","Low","Not Disease",0.431886108464356
+25,51,"Male","White","High","Not Disease",0.472943766252754
+29,42,"Female","White","Medium","Diseased",0.503289000463346
+38,50,"Male","Black","High","Not Disease",0.438528452452395
+43,38,"Female","Asian","Medium","Diseased",0.406858522493463
+49,53,"Female","Asian","Medium","Diseased",0.468085943274106
+55,49,"Female","White","Low","Not Disease",0.40746308184911
+62,39,"Male","Hispanic/Latino","High","Not Disease",0.457059210069915
+68,42,"Female","Black","Medium","Not Disease",0.400967435956353
+77,52,"Male","White","Low","Not Disease",0.400955084637161
+82,54,"Male","Asian","Low","Not Disease",0.422036780396029
+84,46,"Female","Hispanic/Latino","Medium","Diseased",0.400782786990727
+86,62,"Male","White","Medium","Not Disease",0.400597070480426
+92,40,"Male","Asian","Medium","Not Disease",0.406259331203189

@@ -1,0 +1,23 @@
+---
+title: "Data_AnalyticsI_In_Class_Exercises"
+output: pdf_document
+date: "2023-07-26"
+---
+
+Good Afternoon QBS 103 Crew!
+I know, you are devastated that this is the last lecture I'll be teaching you this semester. I myself shed a tear just this morning. Still, we must make the most of our final class together by completing an in class assignment. This problem set will not be graded. If you complete this assignment before the class time ends, you are free to leave. If you are unable to complete this assignment before the class time runs out, you do not need to finish the assignment at home. Please feel free to reach out if you have any questions or concerns! 
+
+1) On our class GitHub in the "data" directory you will find a subdirectory called "Data_Analytics_1_In_Class_Assignment_Data". Write a function that takes the directory as an input, loops through all the files in the directory, and identifies individuals with CRP levels greater than 0.4mg/dL. Write the data for these individuals with high CRP to fiver separate files, one for each sample data file.
+```{r setup, include=TRUE}
+
+```
+
+2) Write a function that takes the "Data_Analytics_1_In_Class_Assignment_Data" directory and generates one set box plots for male and female CRP levels for all five sets of sample data.
+```{r}
+
+```
+3) Write a function that takes the "Data_Analytics_1_In_Class_Assignment_Data" and plots a scatterplot of age and crp for each sample data set. You should end up with five scatter plots. Color the scatter plot dots  by disease status. 
+```{r}
+
+```
+
