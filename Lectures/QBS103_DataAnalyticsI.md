@@ -53,20 +53,15 @@ Assigning variables in loops provides us the flexibility to carry out more compl
 
 ## While Loops
 
-While loops are another common type of loop in R that allow us to execute tasks so long as the statement we set is true (Fig. 2). For example, in an ordered list of professional basketball players points for the season we might want to print the list of players with over 4000 points.
+While loops are another common type of loop in R that allow us to execute tasks so long as the statement we set is true (Fig. 2). 
 
 ![while_flowdiagram](/images/while_flowdiagram.png)
 
 ```{r}
-players <- c("LeBron James","Kevin Durant","Stephen Curry","James Harden","Klay Thompson")
-points <- c(8023, 4878, 3966, 3637, 3032)
-
-basketball <- data.frame(players, points)
-
-head(basketball)
-
-while (basketball$points >= 4000){
-  print(basketball$players)
+i <- 1
+while (i < 6) {
+  print(i)
+  i <- i + 1
 }
 ```
 
