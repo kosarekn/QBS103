@@ -3,7 +3,7 @@
 #Instructions
 * Write your code in the R code chunks provided.
 * When you are finished with your assignment, upload this R Markdown file under Assignments tab on our class canvas page.
-* MAKE SURE TO COMMENT YOUR.
+* MAKE SURE TO COMMENT YOUR CODE.
 * You can work with your classmates, but remember to write their name in the comments.
 * If you are inspired by code you found online make sure you cite the website, comment your code, and make it your own. No copy and pasting.
 
