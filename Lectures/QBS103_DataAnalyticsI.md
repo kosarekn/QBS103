@@ -180,6 +180,7 @@ for (file in filenames){
 It's great to have information on our age data that we can put in a table, but we might find it useful to visualize our data with a figure. We can observe the distribution of the age information using a histogram. Let's generate a histogram for age in each of our five studies.
 
 ```{r}
+library(ggplot2)
 setwd("/Users/noellekosarek/Documents/GitHub/QBS103/data/Data_Analytics_1_Lesson_Data")
 
 for (file in filenames){
@@ -205,6 +206,7 @@ for (file in filenames){
 I personally would like to introduce all of you to the Harry Potter R color palette by creating bar plots for the distribution of age across the race category. Here I am implementing the "ronweasley" color scale. You can explor the use of this color palette [here](https://github.com/aljrico/harrypotter).
 
 ```{r}
+library(harrypotter)
 for (file in filenames){
   the_file <- read.csv(file)
   age_var <- the_file$age
