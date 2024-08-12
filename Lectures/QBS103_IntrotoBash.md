@@ -104,9 +104,9 @@ cd /Users/f002yt8/Documents
 I often organize each of my projects into their own directory (folder). Within that directory, I have several subdirectories such as "code", "figures", and "saved_objects". Nice and organized, if I do say so myself. This, however, can pose a problem when I go to search for a directory on my computer called "code". In some cases there may be multiple directories called "code" and we would need to distinguish which directory contains the code of interest. We need to feed the specific "address" of the code folder we want to the command line. Let's say I want to get to the directory with the "code" subdirectory for project 5 that is located on my desktop. I might employ the following command:
 
 ``` bash{cmd}
-cd /Users/noellekosarek/Desktop/project5/code/
+cd /Users/f002yt8/Documents/project5/code/
 ```
-The path `/Users/noellekosarek/Desktop/project5/code/` refers specifically to the code directory in project5. Each directory and sub-directory in the path are separated by the forward slash `/` to indicate the path through the directories to the directory of interest. You will need to submit the location of the files you would like to analyze using a path when you run bioinformatic software.
+The path `/Users/f002yt8/Documents/project5/code/` refers specifically to the code directory in project5. Each directory and sub-directory in the path are separated by the forward slash `/` to indicate the path through the directories to the directory of interest. You will need to submit the location of the files you would like to analyze using a path when you run bioinformatic software.
 
 ## Absolute vs. Relative Paths
 
@@ -114,7 +114,7 @@ The command `pwd`returns the absolute path to your current working directory, th
 
 One "shortcut" that makes navigating the command line a bit easier is using a relative path. A relative path uses the directory structure (which we can see in our absolute path returned by the command `pwd`) to move up or down through directories using shortcuts. One very common shortcut is `..` which translates to the directory one level "above" your current directory.
 
-Using the example in the figure again, from `/Users/noellekosarek/Desktop/project5/code/` we could get back to the `project5` directory using the absolute path command `cd /Users/noellekosarek/Desktop/project5/` or we could use the relative path with the command `cd ..`.
+Using the example in the figure again, from `/Users/f002yt8/Documents/project5/code/` we could get back to the `project5` directory using the absolute path command `cd /Users/f002yt8/Documents/project5/` or we could use the relative path with the command `cd ..`.
 
 This shortcut saves a lot of time and typing BUT it requires that you have a good understanding of where you are in your working directory structure, so do not be shy about using the pwd command.
 
@@ -213,9 +213,9 @@ That's enough for the HPC environment today. Dr. Darbos will be providing extens
 
 ## Data Exploation
 
-It is a good idea to stay organized when working on the terminal by creating project directories, so let's start by making a directory for this class called `QBS_103` on our desktops.
+It is a good idea to stay organized when working on the terminal by creating project directories, so let's start by making a directory for this class called `QBS103` on our desktops.
 
-You will notice that I chose a directory name with no spaces. The space is a special character, special characters need to be escaped with the `\` and so `QBS_103` would look like `QBS\103` with the escape characters. You can see that file names with spaces become unwieldy to type out so most programmers will replace spaces with `_`, `.`, or `-` in their filenames to keep everything neat.
+You will notice that I chose a directory name with no spaces. The space is a special character, special characters need to be escaped with the `\` and so `QBS103` would look like `QBS\103` with the escape characters. You can see that file names with spaces become unwieldy to type out so most programmers will replace spaces with `_`, `.`, or `-` in their filenames to keep everything neat.
 
 ```bash{cmd}
 # Navigate to your desktop
@@ -244,7 +244,7 @@ ls
 ```
 As expected, the new directory that you created is empty. Let's add something to it! On the class canvas page, you will find a file called "all_counts.txt". Download it and put it on your Desktop, not in the directory we just created (yet!).
 
-We can copy entire files from one directory to another using a short command `cp`, short of copy. let's copy the all_counts.txt file from our Desktop into the `QBS_103` directory we just created:
+We can copy entire files from one directory to another using a short command `cp`, short of copy. let's copy the all_counts.txt file from our Desktop into the `QBS103` directory we just created:
 
 ```bash{cmd}
 cp /Users/f002yt8/Desktop/all_counts.txt $QBS
@@ -290,10 +290,10 @@ Now let's rename the copy of the all_counts.txt file that we just created.
 mv ~/all_counts.txt ~/all_counts.copy.txt
 ```
 
-You can also use the `mv` command to move a file to a new location. Let's move the all_counts.copy.txt from your home directory into your QBS_103 directory.
+You can also use the `mv` command to move a file to a new location. Let's move the all_counts.copy.txt from your home directory into your QBS103 directory.
 
 ```bash{cmd}
-# Move the all_counts.copy.txt into your QBS_103 directory.
+# Move the all_counts.copy.txt into your QBS103 directory.
 mv ~/all_counts.copy.txt $QBS/all_counts.copy.txt
 
 #check the contents of your directory
