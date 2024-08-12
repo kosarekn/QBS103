@@ -97,7 +97,7 @@ ls
 pwd
 
 # 'cd' command allow us to change directories
-cd /Users/noellekosarek/Desktop/
+cd /Users/f002yt8/Documents
 ```
 
 ## Where is Your Data Stored?
@@ -141,13 +141,13 @@ The discovery cluster is a resource hosted by Dartmouth's Research Computing tea
 
 ```bash{cmd}
 # Establish the secure shell connection ****REPLACE netID WITH YOUR OWN ID****
-ssh netID@discovery.dartmouth.edu
+ssh netID@discovery8.dartmouth.edu
 
 # Enter your password at the prompt (when you type no characters will show up to preserve privacy)
-netID@discovery.dartmouth.edu's password:
+netID@discovery8.dartmouth.edu's password:
 
 # You're in!
-(base) [netID@discovery7 ~]$
+(base) [netID@discovery8 ~]$
 ```
 
 ## Customizing Your Environment
@@ -219,16 +219,16 @@ You will notice that I chose a directory name with no spaces. The space is a spe
 
 ```bash{cmd}
 # Navigate to your desktop
-cd /Users/noellekosarek/Desktop/
+cd /Users/f002yt8/Documents
 
 # Make the directory.
-mkdir -p /QBS_103
+mkdir -p /QBS103
 
 # Change to the newly-created directory.
-cd /QBS_103
+cd /QBS103
 
 # Create a variable so we can get here quickly
-QBS="/Users/noellekosarek/Desktop/QBS_103"
+QBS="/Users/f002yt8/Documents/QBS103"
 
 ###############
 # Add variable definition to .bash_profile
@@ -247,7 +247,7 @@ As expected, the new directory that you created is empty. Let's add something to
 We can copy entire files from one directory to another using a short command `cp`, short of copy. let's copy the all_counts.txt file from our Desktop into the `QBS_103` directory we just created:
 
 ```bash{cmd}
-cp /Users/noellekosarek/Desktop/all_counts.txt $QBS
+cp /Users/f002yt8/Desktop/all_counts.txt $QBS
 ```
 ## Viewing The Contents of A File
 
