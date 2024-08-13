@@ -14,3 +14,7 @@ It's easy to get excited about implementing ML algorithms in your research given
 Supervised machine learning leverages labeled data to train algorithms to identify patterns and generate predictions on a similar data set. Supervised machine learning can be divided into classification and regression. 
 
 ### Classification 
+
+Classification algorithms are fed binary or categorically labeled data, which inform the algorithm to learn attributes of each category. For example, we can conduct classification on photos of dogs and cats and ask our algorithm to bin the photos into "Puppos" and "Kitties". 
+
+![cat-dog-classification](/images/cat-dog-classification.png)
