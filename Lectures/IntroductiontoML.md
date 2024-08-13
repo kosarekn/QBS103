@@ -6,7 +6,8 @@ Machine learning (ML) is a branch of artificial intelligence that seeks to devel
 
 It's easy to get excited about implementing ML algorithms in your research given it's popularity, but it is important to take the time to understand the statistical framework behind your models. Today we will be exploring classical machine learning, which falls into two categories: supervised and unsupervised.
 
-![for-loop](/images/for-loop.jpeg)
+<img src="/images/classical-machine-learning.pdf" width="100" height="100">
+
 
 ## Supervised Machine Learning
 
