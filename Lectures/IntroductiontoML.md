@@ -19,3 +19,4 @@ Classification algorithms are fed binary or categorically labeled data, which in
 
 ![cat-dog-classification](/images/cat-dog-classification.png)
 
+
