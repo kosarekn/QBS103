@@ -195,11 +195,11 @@ ls -a
 cat .bash_profile
 ```
 
-The `.bash_profile` is run every time you start a bash session and contains variables used to configure the bash environment. Defining a variable in the `.bash_profile` will enable the variable to persist between remote sessions. Lets define the variable `$LIST` in our `.bash_profile`.
+The `.bash_profile` is run every time you start a bash session and contains variables used to configure the bash environment. Defining a variable in the `.bash_profile` will enable the variable to persist between remote sessions. Lets define the variable `$LIST` in our `~/.bash_profile`.
 
 ```bash{cmd}
 # use the nano text editor to add the line ' LIST="ls" ' to your bash_profile
-nano `.bash_profile`
+nano `~/.bash_profile`
 
 # source the new bash_profile to add the environment variables to your current session (or start a new bash session)
 source ~/.bash_profile
@@ -211,7 +211,7 @@ Now `$LIST` will be set as an environment variable every time we start a new bas
 
 That's enough for the HPC environment today. Dr. Darbos will be providing extensive instruction on using Discovery in our next class. For now, please close your terminal window and open a fresh new terminal so we can begin digging into some data!
 
-## Data Exploation
+## Data Exploration
 
 It is a good idea to stay organized when working on the terminal by creating project directories, so let's start by making a directory for this class called `QBS103` on our desktops.
 
