@@ -71,6 +71,7 @@ my_fit
 #               PREDICTIVE MODELING AND VALIDATION
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 preds<-predict(my_fit,Test)
-confusionMatrix(preds,Test$Class,positive="WS")
+
+confusionMatrix(preds$pred,Test$Class,positive="WS")
 ```
 
