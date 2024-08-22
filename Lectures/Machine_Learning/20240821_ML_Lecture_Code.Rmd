@@ -7,7 +7,7 @@ date: "2024-08-21"
 
 ## What is Machine Learning
 
-Machine learning (ML) is a branch of artificial intelligence that seeks to develop alorithms based on input data to generate predictions or classifications on unseen data. Examples of machine learning applications are seen across a variety of fields from finance to healthcare. For example, a stockbroker may apply data scraped from X, TikTok, Instagram, Facebook, or the news to her algorithm to capture social factors impacting trading and adequately predict trends in the stock market. Similarly, a clinical scientist may include histology staining and deleterious genetic markers to classify cancer subtypes. 
+Machine learning (ML) is a branch of artificial intelligence that seeks to develop algorithms based on input data to generate predictions or classifications on unseen data. Examples of machine learning applications are seen across a variety of fields from finance to healthcare. For example, a stockbroker may apply data scraped from X, TikTok, Instagram, Facebook, or the news to her algorithm to capture social factors impacting trading and adequately predict trends in the stock market. Similarly, a clinical scientist may include histology staining and deleterious genetic markers to classify cancer subtypes. 
 
 It's easy to get excited about implementing ML algorithms in your research given it's popularity, but it is important to take the time to understand the statistical framework behind your models. Today we will be exploring classical machine learning using the R package CARET: Classification and Regression Training. CARET provides functionality to conduct the following tasks: 
 
@@ -251,7 +251,7 @@ length(featSel)
 featDF<-Train[,featSel]
 ```
 
-Recursive Feature Elimination (RFE) leverages nested cross validation to recursively eliminate features to some optimal number. All features are ranked by importance, and then unimportance. Features are removed to achieve optimal model performace. Note that this can take a very long time! 
+Recursive Feature Elimination (RFE) leverages nested cross validation to recursively eliminate features to some optimal number. All features are ranked by importance, and then unimportance. Features are removed to achieve optimal model performance. Note that this can take a very long time! 
 ```{r}
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #                       FEATURE SELECTION

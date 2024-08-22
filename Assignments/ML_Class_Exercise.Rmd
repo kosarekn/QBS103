@@ -1,0 +1,76 @@
+---
+title: "ML_Class_Exercise"
+output: pdf_document
+date: "2024-08-22"
+---
+
+1) The CARET package provides a built cell segmentation data set called `segmentationData`. To initialize access to the data, you can simply load the CARET package and call data(segmentationData). The loaded data frame will contain 119 imaging measurements on 2019 individual cells taken from a high content screening assay. The team that generated this data set sought to determine if the cells in the assay were segmented well or poorly. 
+
+Read in this data and report how many outcome variables exist in the "Class" variable. 
+```{r setup, include=TRUE}
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#                       READ IN LIBRARIES
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+library(caret)
+```
+```{r}
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#               GET THE LEVELS IN THE CLASS COLUMN
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## It looks like there are two classes: PS - poor segmentation and WS - well segmented
+levels(segmentationData$Class)
+```
+2) Now that you have determined how many outcomes are possible, split your data into 2/3 training data and 1/3 testing data. Make sure you conduct preprocessing before splitting the data! Note: the authors of the publication associated with this data provided a column called "Case" to this data frame indicating they used 50% of their data for training and the other 50% for testing. Remove this column before you conduct downstream processing. 
+```{r}
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#                         DATA CLEANING
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+preProcValues <- preProcess(segmentationData, method=c("center", "scale" ))
+cleanData <- predict (preProcValues, segmentationData)
+cleanData <- subset(cleanData, select = -c(Case))
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#                         DATA SPLITTING
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# We will set a seed so we end up with the same split 
+set.seed(3456)
+
+# This code splits our data 
+trainIndex <- createDataPartition(cleanData$Class, p = 2/3, list = FALSE, times = 1)
+
+# We assign the 2/3 of data to a training set variable
+Train <- cleanData[ trainIndex,]
+
+# We assign the remaining 1/3 of data to a testing set variable
+Test <- cleanData[-trainIndex,]
+
+# Let's take a look at the dimensions of our training and testing set to see if that all worked out ok
+dim(Train)
+dim(Test)
+```
+3) Build an elastic net model that leverages recursive feature elimination to select a subset of important features to be included in your model. Use bootstrapping for cross validation. 
+```{r}
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#                       FEATURE SELECTION
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+rctrl1 <- rfeControl(method = "boot", functions = caretFuncs, allowParallel = F)
+
+trainCtl1 <- trainControl(method = "boot", number = 3, classProbs = TRUE, allowParallel = F)
+
+set.seed(24)
+
+my_fit <- rfe(x=Train,y=Train$Class,
+             sizes = c(5,10,15,20),
+             method = "glmnet", trControl = trainCtl1, tuneLength = 10, rfeControl = rctrl1)
+
+my_fit
+```
+4) Use your new model to predict whether a cell is poorly or well segmented in your testing data set. 
+```{r}
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#               PREDICTIVE MODELING AND VALIDATION
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+preds<-predict(my_fit,Test)
+confusionMatrix(preds,Test$Class,positive="WS")
+```
+
