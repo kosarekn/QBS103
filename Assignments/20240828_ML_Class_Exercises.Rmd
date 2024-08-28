@@ -1,0 +1,25 @@
+---
+title: "20240828_ML_Class_Exercises"
+output: pdf_document
+date: "2024-08-28"
+---
+
+1) The CARET package provides a built cell segmentation data set called `segmentationData`. To initialize access to the data, you can simply load the CARET package and call data(segmentationData). The loaded data frame will contain 119 imaging measurements on 2019 individual cells taken from a high content screening assay. The team that generated this data set sought to determine if the cells in the assay were segmented well or poorly. 
+
+Read in this data and report how many outcome variables exist in the "Class" variable. 
+```{r setup}
+
+```
+2) Now that you have determined how many outcomes are possible, split your data into 2/3 training data and 1/3 testing data. Make sure you conduct preprocessing before splitting the data! Note: the authors of the publication associated with this data provided a column called "Case" to this data frame indicating they used 50% of their data for training and the other 50% for testing. Remove this column before you conduct downstream processing. 
+```{r}
+
+```
+3) Build an elastic net model that leverages recursive feature elimination to select a subset of important features to be included in your model. Use bootstrapping for cross validation. 
+```{r}
+
+```
+4) Use your new model to predict whether a cell is poorly or well segmented in your testing data set. 
+```{r}
+
+```
+
