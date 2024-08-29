@@ -35,6 +35,8 @@ CARET includes built in data with which we can begin our foray into machine lear
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #                     READ IN SCAT DATA
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+data(scat)
+
 # Let's take a look at what our data look like
 head(scat)
 
@@ -97,6 +99,7 @@ Now comes the fun part, we get to pick a model, and there are so many to choose 
 
 * Support Vector Machine - a support vector machine finds a hyperplane to best divide data defined by support vectors (ie. co-ordninates) in n-dimensional space. In other words, we move low dimensional data into a higher dimensional space by leveraging a kernal function and cross validation to find an optimal transformation. Then we find the best plane that divides our data into classifications. 
   - Advantage Alert: one of the major advantages of SVMs is that they can handle outliers 
+  
 * Partial Least Squares Discriminant Analysis (PLS-DA) - PLS-DA is a dimensionality reduction method that incorporates labels in the analysis. PLS-DA uses labels to find the direction of maximum class separation, where principal component analysis (PCA) simply maximizes variance without label information. 
 
 * K-Nearest Neighbor (KNN) - KNN is a non-parametric supervised learning method that uses proximity to make predictions and classifications. 
