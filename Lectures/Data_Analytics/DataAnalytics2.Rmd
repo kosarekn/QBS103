@@ -1,0 +1,467 @@
+---
+title: 'Data Analytics II/III'
+author: "QBS 103: Foundations of Data Science"
+date: "August 6, 2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Lesson Objectives
+
+##### At the end of this lecture you should be able to:
+1. Calculate appropriate summary statistics for a data frame
+2. Apply a single function across multiple rows/columns
+3. Build a simple correlation plot
+4. Build a heatmap
+5. Implement R script dependencies
+
+
+### Additional Resources
+
+*corrplot*: https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html
+
+*pheatmap*: https://r-charts.com/correlation/pheatmap/
+
+
+### Identifying Appropriate Summary Statistics
+
+First, lets generate some random data.
+
+``` {r message = F, warning = F}
+
+library(tidyverse)
+set.seed(3927)
+
+randomData <- data.frame(Cont1 = rnorm(n = 1000,mean = 50,sd = 10),
+                         Cont2 = rnorm(n = 1000, mean = 23,sd = 2),
+                         Cont3 = rexp(n = 1000,rate = 0.25),
+                         Cat1 = factor(rbinom(n = 1000,size = 1,prob = 0.50),
+                                       labels = c(F,T)),
+                         Cat2 = factor(rbinom(n = 1000,size = 1,prob = 0.25),
+                                       labels = c(F,T)),
+                         Cat3 = factor(rbinom(n = 1000,size = 2,prob = 0.40),
+                                       labels = c('A','B','C')))
+
+```
+
+
+**Continuous Variables**
+
+For normally distributed continuous variables, we report mean and standard deviation.
+
+``` {r}
+
+ggplot(data = randomData,aes(x = Cont1)) +
+  geom_histogram(binwidth = 5) + 
+  labs(x = 'Continuous Variable 1',y = 'Frequency') +
+  theme_classic()
+
+```
+
+We can extract all the individual components of mean and standard deviation using the following functions.
+
+``` {r}
+
+# Mean
+mean(randomData$Cont1)
+
+# Standard deviation
+sd(randomData$Cont3)
+
+```
+
+We can then combine these values to make them nicely formatted.
+
+``` {r}
+
+print(paste0('Mean (sd): ',round(mean(randomData$Cont1),digits = 2),' (',
+             round(sd(randomData$Cont1),digits = 2),')'))
+
+```
+
+For non-normally distributed continuous variables, we report median and interquartile range (IQR). 
+
+``` {r}
+
+ggplot(data = randomData,aes(x = Cont3)) +
+  geom_histogram(binwidth = 2) + 
+  labs(x = 'Continuous Variable 3',y = 'Frequency') +
+  theme_classic()
+
+
+```
+
+We can extract all the individual components of median and IQR using the following functions.
+
+``` {r}
+
+# Median
+median(randomData$Cont3)
+
+# Quartile values
+quantile(randomData$Cont3)
+
+# IQR (Q3 - Q1)
+IQR(randomData$Cont3)
+
+```
+
+We can string these values together as follows to print out a clean and easy to read summary.
+
+``` {r}
+
+print(paste0('Median [IQR]: ',round(median(randomData$Cont3),digits = 2),' [',
+             round(quantile(randomData$Cont3,1/4),digits = 2),', ',
+             round(quantile(randomData$Cont3,3/4),digits = 2),']'))
+
+```
+
+
+**Categorical Variables**
+
+For categorical covariates, we typically report the count (n) and percentage of each level of that variable.
+
+``` {r}
+
+data.frame('n' = c(table(randomData$Cat1)),
+           'perc' = c(round(table(randomData$Cat1)/1000*100,digits = 2)))
+
+```
+
+
+### Refresher: Building a Function
+
+To define a function in R, we use the following syntax:
+
+``` {r}
+
+# Define function to calculate mean (sd)
+meanSD <- function(x) {
+  # Calculate individual values
+  myMean <- mean(x)
+  mySD <- sd(x)
+  # Combine values
+  paste0(round(myMean,digits = 2),' (',round(mySD,digits = 2),')')
+}
+
+meanSD(x = randomData$Cont1)
+
+```
+
+When we run a function, no intermediate values are saved. The only output from the function will be the final value you return.
+
+We can also provide default values for terms in a function.
+
+``` {r}
+
+# Define a function to calculate a mean or a median
+contSummary <- function(x,normal = T) {
+  
+  # Calculate mean (sd) if normally distributed (the default)
+  if (normal == T) {
+      # Calculate individual values
+    myMean <- round(mean(x),2)
+    mySD <- round(sd(x),2)
+    # Combine values
+    paste0(myMean,' (',mySD,')')
+  }
+  # Calculate median (IQR) if non-normally distributed
+  else {
+    # Calculate individual values
+    myMedian <- round(median(x))
+    myIQR1 <- round(quantile(x,1/4),digits = 2)
+    myIQR2 <- round(quantile(x,3/4),digits = 2)
+    # Combine values
+    paste0(myMedian,' [',myIQR1,', ',myIQR2,']')
+  }
+}
+
+# Run function on normally distributed variable
+contSummary(x = randomData$Cont1,normal = T)
+
+# Run function on non-normally distributed variable
+contSummary(x = randomData$Cont3,normal = F)
+
+```
+
+If we don't specify the "normal" term which we set a default for, the function will assume that it is normally distributed.
+
+``` {r}
+
+contSummary(x = randomData$Cont1)
+contSummary(x = randomData$Cont3)
+
+```
+
+
+### The *apply* Function
+
+First, let's generate a new data set with 20 different continuous, normally distributed variables.
+
+
+``` {r}
+
+set.seed(1234)
+#
+randomData2 <- as.data.frame(matrix(nrow = 100,ncol = 20))
+#
+colnames(randomData2) <- paste0('contVar',seq(1:ncol(randomData2)))
+#
+means <- runif(20,min = 10,max = 30)
+sds <- runif(20,min = 0.5,max = 5)
+#
+for (i in 1:ncol(randomData2)) {
+  randomData2[,i] <- rnorm(100,mean = means[i],sd = sds[i])
+}
+```
+
+Say we wanted to look at the mean of each of these variables. We could loop through and calculate the mean iterativly for each variable like this:
+
+``` {r}
+# Generate am empty vector of means
+meansCalc1 <- array(dim = ncol(randomData2))
+names(meansCalc1) <- colnames(randomData2)
+# Look at our empty vector
+meansCalc1
+
+# Loop through each column
+for (i in colnames(randomData2)) {
+  # Calculate the mean of values in that column
+  meansCalc1[i] <- mean(randomData2[,i])
+}
+
+# Print final vector
+meansCalc1
+# Compare to the list of means we used to generate our data
+cbind(means,meansCalc1)
+
+```
+
+This requires several lines of code and, as we start working with bigger data, can be computationally intensive. Luckily, we can also do this with a single line of code using the *apply()* function. For this function, you will provide 3 inputs:
+
+1. The data frame (m x n) you wan to use the apply function on. Note: The apply function will include every row and every column so ensure that you provide it with an appropriate subset of your data if necessary.
+2. The "margin" i.e. if you want it to perform this function on rows or columns."**MARGIN = 1**" indicates it should perform the function on every on every row, resulting in an array of **m length** and "**MARGIN = 2**" indicates it should perform the function on every column, resulting in an array of **n length**.
+3. The function you want it to apply on those rows or columns. You can either specify an existing function by name or define your own in line (more on this later).
+
+So, we can recreate the same array of means we created in the loop above, now using a single line of code like this:
+
+``` {r}
+
+# Calculate the average of each row
+meansCalc2 <- apply(randomData2,MARGIN = 2,FUN = mean)
+
+# Compare to our previous calculations
+cbind(means,meansCalc1,meansCalc2)
+table(meansCalc1 == meansCalc2)
+
+```
+
+You can see that changing the margin changes the dimensions of our output:
+
+``` {r}
+
+# Calculate the average of each row
+rowMeanCalc <- apply(randomData2,MARGIN = 1,FUN = mean)
+rowMeanCalc
+
+```
+
+We can also apply functions we have defined ourselves, like the function we defined above to summarize continuous variables. 
+
+``` {r}
+contSummary
+```
+
+Notice that the only input required for this function is a single array. Importantly, to use the apply function it can only take input as an array because you will only ever be inputting an array of rows or an array of columns. Now we can use the apply function to calculate summary statistics as follows:
+
+``` {r}
+apply(randomData2,MARGIN = 2,FUN = contSummary)
+```
+
+You can also define function in line, although for anything complex it is best practice to define it as a function up front. 
+
+For example, if I am working with gene expression data, I might want to log2 normalize it prior to calculating my summary statistics.
+
+```{r}
+apply(randomData2,MARGIN = 2,FUN = function(x) {log2(mean(x))})
+```
+
+Or, if you want to define additional inputs for a function you can do it like this:
+```{r}
+apply(randomData2,MARGIN = 2,FUN = function(x) {contSummary(x,normal = F)})
+```
+
+### Correlation Plots
+
+For the remainder of today's class, we are going to use simulated extracellular vesicle (EV) miRNA data which you can download on canvas. This data is currently stored as raw counts from array data in a 798x25 matrix where each row indicates a miRNA probe and each column represents a single sample.
+
+``` {r}
+# Load data (available on canvas)
+load('EVmiRNA.RData')
+
+# Look at top values of data
+head(miRNA)
+
+# Look at top 20 row (aka miRNA) names
+row.names(miRNA)[1:20]
+
+```
+
+We can calculate correlations for any case in which we have paired data. For example, we can look at the correlation between any two miRNAs in our data set between subjects. We can calculate correlations for a data frame using the *cor()* function in R. When you use the *cor()* function, you will need to designate the method you want it to use. Typically, you will see Pearson Correlation Coefficient used for normally distributed data as it assumes a linear relationship between your two variables and you will see a Spearman's Rank Correlation Coefficient used for non-normal data as it is a non-parametric test that does not assume linearity.
+
+The *cor()* function takes the input of a data frame and will calculate the correlation between each column of your data frame. So, if we use our data frame where columns reflect samples, it will tell us the correlation between each sample. 
+
+``` {r}
+#install.packages('corrplot')
+library(corrplot)
+
+# Calculate the spearman correlation coefficient
+corrMatrix <- cor(miRNA,method = 'spearman')
+# Generate a circle-based plot
+corrplot(corrMatrix,method = 'circle')
+# Generate a color-based correlation plot
+corrplot(corrMatrix,method = 'color')
+
+```
+
+We can also produce a plot with the individual correlations included, but it's easier to see this with a smaller plot.
+
+``` {r}
+
+# Generate plot with absolute correlations
+corrplot(corrMatrix[1:5,1:5],method = 'number')
+
+```
+
+If we want to generate the correlations between each miRNA we first need to transpose the matrix (i.e. make the columns the rows and the rows the columns).
+
+``` {r}
+
+# Transpose a subset of the matrix
+t(miRNA[1:5,1:5])
+
+```
+
+Here, we can see our miRNA are now in the columns, so that when we use the *cor()* function it will calculate between-miRNA correlations instead of between sample correlations.
+
+``` {r}
+
+# Calculate correlations
+miRNA.cor <- cor(t(miRNA),method = 'spearman')
+
+# Plot correlations
+corrplot(miRNA.cor[1:10,1:10],method = 'circle')
+
+```
+
+
+### Heat Maps
+
+Heat maps are an easy way to visualize data and look for overall trends when working with highly dimensional data. There are many packages you can use to generate heatmaps but today we're going to work with *pheatmap* which has really easy functionality.
+
+To start, we're going to identify miRNA in our data that have the most variability so that we can have a more interesting heatmap to look at. Variance is just a measure of how much values within a set of numbers differ from the mean. So, the set {3,3.5,4} would have a much lower variance than the set {0,2.5,8} even though they both have the same mean. The formula for variance looks like this:
+
+$$ \sigma^2 = \frac{\displaystyle\sum_{i=1}^{n}(x_i - \mu)^2} {n} $$
+
+In R, we can calculate this using the *var()* function:
+
+```{r}
+
+# Compare sample variances
+var(c(3,3.5,4))
+var(c(0,2.5,8))
+
+```
+
+Notably, standard deviation is just the square root of variance, which we can see easily here.
+
+``` {r}
+
+# Calculate variance
+var(c(0,2.5,8))
+# Calculate the sd squared
+sd(c(0,2.5,8))^2
+
+```
+
+Now, we can use the apply function to calculate these values quickly for all the 798 miRNA in our dataset.
+
+```{r}
+
+# Calculate variance of each miRNA
+variance <- apply(miRNA,MARGIN = 1,FUN = var)
+# Order rows of miRNA so that highest variance in expression is on top
+miRNA <- miRNA[order(variance,decreasing = T),]
+
+# Log2-normalize data for plotting
+log2.miRNA <- log2(miRNA)
+
+```
+
+Now that we have our data ready, we can generate a very simple heatmap. 
+
+``` {r}
+
+#install.packages('pheatmap')
+library(pheatmap)
+
+# Generate heatmap without clustering
+pheatmap(log2.miRNA[1:20,],
+         cluster_rows = F,
+         cluster_cols = F)
+
+```
+
+### Basic Hierarchical Clustering
+
+Clustering is a way of identifying how similar different samples, etc. are from each other in our data. We often add clustering to heat maps to help us visualize how similar vs. dissimilar different rows and columns are from one another. There are lots of different algorithms you can use for clustering but for the sake of this lecture, we're just going to talk about Euclidean distance as that is a common default for heatmaps. The equation for Euclidean distance looks like this:
+
+$$  d\left( p,q\right)   = \sqrt {\sum _{i=1}^{n}  \left( q_{i}-p_{i}\right)^2 }  $$
+
+We can calculate this value between every combination of samples or miRNAs in our data and then create a dendrogram by designating which values are closer to each other, or less close to each other. Every time you assign one set of samples as closer to each other, you will calculate distance again between that now cluster of samples, and all other remaining samples, iteratively until all samples have been linked. Ultimately, the end product looks like this:
+
+
+```{r}
+# Add clusters
+# Note: euclidean is the default so as long as clustering is turned on this is what you will get)
+pheatmap(log2.miRNA[1:20,],
+         clustering_distance_cols = 'euclidean',
+         clustering_distance_rows = 'euclidean')
+```
+
+
+An important thing to remember when ever you're looking at a clustering dendrogram is that not all order matters. Technically, any point it branches off it can pivot on that access so ultimately, Subject10 could end up next to Subject8, Subject21, Subject25, or any of the other members of that cluster. 
+
+Now we can start to see our samples breaking out into 2 primary clusters. We may want to visualize additional things, such as if this clustering pattern is related to a covariate of interest.
+
+``` {r}
+
+# Define covariate for tracking bar
+set.seed(9876)
+annotationData <- data.frame(row.names = colnames(miRNA),
+                             'Status' = c(factor(rbinom(n = 25,size = 1,prob = 0.6),
+                                                 labels = c('Disease X','Healthy'))))
+annotationColors <- list(Status = c('Disease X' = 'aquamarine4',
+                                    'Healthy' = 'deepskyblue4'))
+
+# Generate heatmap
+pheatmap(log2.miRNA[1:20,],
+         clustering_distance_cols = 'euclidean',
+         clustering_distance_rows = 'euclidean',
+         annotation_col = annotationData,
+         annotation_colors = annotationColors)
+```
+
+
+### In Class Acitivity
+
+1. Write a function to calculate the relative abundance of each miRNA in each sample (i.e. what percentage of the total miRNA in a given sample is your miRNA of interest). Verify that each sample has a total relative abundance of 1.
+
+2. Using the apply function, identify the highest relative abundance each miRNA has in a single sample.
+
+3. Sort the dataset by miRNA with the highest relative abundance and generate a heatmap of the relative abundance (not the absolute counts) of each miRNA, including the top 20 miRNA by single-sample relative abundance.
+
+4. Generate a random binary variable for sex and a categorical variable for age group using distributions and age cutoffs (hint: use the *cut()* function) of your chosing. Add tracking bars to your plot for your generated variables.

@@ -1,0 +1,235 @@
+---
+title: "Data Wrangling II"
+author: "Meghan Muse"
+date: "July 16, 2024"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Lesson Objectives
+
+
+##### At the end of this lecture you should be able to:
+1. Use pipes in dplyr 
+2. Subset data using dplyr
+3. Move between wide and long data frames in tidyr
+4. Generate simple summary tables
+
+
+### Resources
+
+Cheat Sheet for Functions in dplyr: https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
+
+Pipes in tidyverse: https://style.tidyverse.org/pipes.html
+
+``` {r}
+
+# Install all tidyverse associated packages
+#install.packages('tidyverse')
+
+# If you only want to install the packages we will use in this lecture:
+#install.packages('dplyr')
+#install.packages('tidyr')
+
+```
+
+### Data Set
+
+We're going to start this lecture by generating the same random data set that we used in the last lecture. As always, don't forget to set a random seed so that our data is comparable across lectures.
+
+``` {r}
+
+# Set a random seed
+set.seed(103)
+
+# Define a data frame with our randomly generated data
+randomData <- data.frame('SubjectID' = seq(1:1000), 
+                         'Systolic.BP' = rnorm(n = 1000,mean = 128,sd = 20),
+                         'Diastolic.BP' = rnorm(n = 1000,mean = 71,sd = 10),
+                         'Age' = trunc(runif(n = 1000,min = 18,max = 70)),
+                         'Male' = rbinom(n = 1000,size = 1,prob = 0.5))
+# Define binary variable for biological sex
+randomData$BiologicalSex <- factor(ifelse(randomData$Male == 1,'Male','Female'))
+# Define variable specifying age above 65 (medicare eligible)
+randomData$MedicareAge <- ifelse(randomData$Age < 65,F,T)
+
+```
+
+
+### Pipes
+
+If you've looked at a lot of sample code online before, you've probably run into this syntax: **%>%**. This is a pipe! Pipes are used in tidyverse to keep code clean and prevent the defining of a lot of unnecessary intermediate variables. One of the main goals of this syntax is to keep a lot of white space in your code to help make it as readable as possible for anyone reading through your code. 
+
+Pipes will get more complex as we go through the lecture but first lets start of with something simple to start to see what they do. First, lets define a subset of our data that reflects only individuals eligible for medicare. Last lecture, we used the following syntax:
+
+``` {r}
+
+# Subset to only those at medicare age using our binary variable
+medicareData <- randomData[which(randomData$MedicareAge == T),]
+head(medicareData)
+
+# Subset to only those at medicare age using a continuous variable
+medicareData <- randomData[randomData$Age >= 65,]
+head(medicareData)
+
+```
+
+
+Now, we can generate the same data set using a pipe and the filter function in dplyr. 
+
+``` {r}
+
+library(dplyr)
+
+# Subset without pipe
+medicareData <- filter(randomData,Age >= 65)
+
+head(medicareData)
+
+# Subset with a pipe
+medicareData <- randomData %>%
+  filter(Age >= 65)
+
+head(medicareData)
+
+```
+
+Based on the the use of the filter function above, can you describe the syntax of how a pipe works?
+
+Pipes might not seem too useful when we are only providing it a single function, but what if we want it to work through multiple steps? 
+
+
+``` {r}
+
+medicareData <- randomData %>%
+  dplyr::filter(Age >= 65) %>%
+  dplyr::select(SubjectID,Systolic.BP,Diastolic.BP,BiologicalSex,Age)
+
+head(medicareData)
+
+```
+
+What is the select function doing?
+
+``` {r}
+
+medicareData <- randomData %>%
+  filter(Age >= 65) %>%
+  select(SubjectID,Systolic.BP,Diastolic.BP,BiologicalSex,Age) %>%
+  mutate(MedicareID = row_number()) %>%
+  mutate(BP.Diff = Systolic.BP - Diastolic.BP)
+
+head(medicareData)
+
+```
+
+Based on these examples, what is the mutate function doing?
+
+
+### Wide -> Long Data in *tidyverse*
+
+Last class, we moved from a wide to a long data frame using the *melt* function in *reshape2*. 
+
+``` {r}
+
+# Melt the data frame into a long form
+longData1 <- reshape2::melt(randomData[,c('SubjectID','Systolic.BP','Diastolic.BP','Age','BiologicalSex')],
+                           id.vars = c('SubjectID','Age','BiologicalSex'),value.name = 'BP',
+                           variable.name = 'BP.Type')
+
+head(longData1)
+
+```
+
+
+In *dplyr*, we will use the the *gather* function or the *pivot_longer*.
+
+``` {r}
+longData2 <- randomData %>%
+  tidyr::gather(Systolic.BP,Diastolic.BP,key = BP.Type, value = BP)
+head(longData2)
+
+longData <- randomData %>%
+  tidyr::pivot_longer(cols = c(Systolic.BP,Diastolic.BP),names_to = 'BP.Type', values_to = 'BP')
+head(longData)
+```
+
+What is different about the syntax we used here vs. what we used in the last class?
+
+We can also use some more pipes to clean this up even more:
+
+``` {r dplyr}
+
+longData <- randomData %>%
+  # Convert to long format
+  tidyr::gather(key = BP.Type, value = BP,c('Systolic.BP','Diastolic.BP')) %>%
+  # Split into two seperate variables
+  tidyr::separate(col = BP.Type, into = c('BP.Type','Bad.ID')) %>%
+  # Remove the bad ID variable
+  select(-Bad.ID)
+  
+head(longData)
+
+```
+
+Now that our data is in a long format, we can generate plots with both measures of blood pressure in one plot.
+
+``` {r}
+
+# Generate a scatter plot of age by systolic blood pressure
+ggpubr::ggscatter(longData,x = 'Age',y = 'BP',color = 'BP.Type')
+
+# Generate a boxplot for diastolic blood pressure distrubition by biological sex in our original dataset
+ggpubr::ggboxplot(longData,x = 'BP.Type',y = 'BP',color = 'BiologicalSex',
+                  ylab = 'Blood Pressure (mmHg)',xlab = '')
+
+```
+
+
+
+Take a minute and comment what each step of this pipe is doing.
+
+
+### Long -> Wide Data in *tidyverse*
+
+We can go back to a wide format in *tidyr* using the *spread* or *pivot_wider* function. 
+
+``` {r}
+# Convert using spread
+wideData1 <- longData %>%
+  tidyr::spread(key = BP.Type,value = BP)
+head(wideData1)
+# Convert using pivot_wider
+wideData <- longData %>%
+  tidyr::pivot_wider(names_from = BP.Type,values_from = BP)
+head(wideData)
+```
+
+And, just like in *reshape2* we can also create summary tables using the *group_by* and *summarise* functions.
+
+``` {r tidyr}
+
+longData %>%
+  tidyr::spread(key = BP.Type,value = BP) %>%
+  dplyr::mutate(MedicareAge = ifelse(Age >= 65,T,F)) %>%
+  dplyr::group_by(BiologicalSex,MedicareAge) %>%
+  dplyr::summarise(Mean.Age = mean(Age),Mean.Sys = mean(Systolic),Mean.Dias = mean(Diastolic))
+
+```
+
+
+### In Class Activity
+
+This is the same activity you did last class but now I want you to come up with all your solutions using *tidyverse*. Do not copy and paste any functions or syntax directly from your notes. Make sure you type everything out again to help re-enforce these new functions.
+
+1. Define a new variable for hypertension in our original dataset (randomData). Here we will define hypertension as systolic blood pressure over 130 or a diastolic blood pressure over 80. Plot the distrubution in age for individuals with and without hypertension using boxplots. Note: this step does not require *tidyverse* but try to come up with a different method than you used in last class or than was provided in the solutions for last class.
+
+2. Use the *gather* or *pivot_longer* function to generate boxplots of the distribution of systolic and diastolic blood pressure in hypertensive vs. normotensive individuals (color should be based on hypertension status).
+
+3. Use the *spread* or *pivot_wider* function to generate a table summarizing the mean age, systolic, and diastolic BP for males and females, seperately, with and without hypertension. Your table should have 4 rows. 
+Order your table output such that it lists values for normotensive individuals first and hypertensive individuals second. We actually didn't talk about how to do this yet but look up the syntax for the *arrange* function online and try to figure out how to do it. You'll notice that the order in which you put this function in your pipe will be very important.

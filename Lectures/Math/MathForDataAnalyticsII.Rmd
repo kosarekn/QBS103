@@ -1,0 +1,413 @@
+---
+title: 'Math for Data Analytics II'
+author: "QBS 103: Foundations of Data Science"
+date: "August 27, 2024"
+output: pdf_document
+---
+  
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Lesson Objectives
+
+##### At the end of this lecture you should be able to:
+
+1. Simulate error around a model
+2. Plot functions of two variables in R
+3. Use R to check your work in calculus
+4. Perform basic linear algebra in R
+
+
+### Resources
+mosaicCalc in R: <https://cran.r-project.org/web/packages/mosaicCalc/vignettes/Calculus_with_R.html> 
+
+
+### Simulating Data and Error
+
+In class previously we have talked about simulating data. This is a fundamental process to examine most statistical and mathematical methodologies computationally. When we simulate data, we assume some underlying model and then generate many data points under that assumption. 
+
+Here is a quick review of some of the helpful functions we've used in R so far to simulate data.
+
+```{r}
+# Set a random seed for reproducibility
+set.seed(9635)
+# Generate a list of integers increasing by 1
+x <- 1:10
+# Generate a sequence of equally spaced numbers within a range 
+x<- seq(from = 1,to = 5,by = 0.5)
+x <- seq(from = 1,to = 5, length.out = 100)
+# Generate a list of numbers following a random uniform distribution (i.e. equal probability between the min and max number)
+x <- runif(n = 100,min = 0,max = 1)
+hist(x)
+# Generate a list of numbers following the normal distribution with a specified mean and sd
+x <- rnorm(n = 100,mean =0,sd = 1)
+hist(x)
+# Generate a list of integers following the binomial distribution with a given probability and number of trials
+x <- rbinom(n = 100,size = 1,prob = 0.5)
+hist(x)
+```
+
+You will learn more about different probability distributions in your statistics courses but each probability distribution has a matching function in R from which you can generate that distribution.
+
+Now, if we return to our previously defined function from last class: $$f(x)=x\text{sin}\left(\frac{1}{x}\right)$$
+You'll recall this function looks like this:
+
+```{r}
+# Define our function
+myFunction<-function(x){
+  x*sin(1/x)
+}
+# Set domain of x
+x <- seq(from = -1,to = 1,length.out = 10000)
+# Calculate f(x) over our domain of x
+y <- myFunction(x)
+
+# Plot the function over our domain of x
+plot(x,y,type="l")
+```
+
+Real world data never looks this clean, there is always additional noise compared to the simple model of relationships. We often consider an actual model for this noise as well. 
+
+Suppose for instance that we wanted to study the above relationship under different noise parameters. We would start by generating our y values over x, and then can use our random functions to 'add' noise to the relationship. For instance:
+
+```{r}
+# Calculate noise parameter following a uniform distribution
+noise <- runif(n = length(x),min = 0,max = 0.05)
+hist(noise)
+# Re-calculate f(x) with a noise parameter
+y <- myFunction(x) + noise
+
+# Plot f(x) with noise
+plot(x,y,type = "l")
+```
+
+Here, we added random noise to each point, with an error between 0 and 0.05 following a uniform distibution. We could do the same following a normal distribution:
+
+```{r}
+# Calculate noise parameter using a normal distribution
+noise <- rnorm(length(x),mean = 0,sd = 0.1)
+hist(noise)
+# Re-calculate f(x) with new noise parameter
+y <- myFunction(x) + noise
+# Replot
+plot(x,y,type="l")
+```
+
+Here, we added noise with a mean of 0, but a standard deviation of 0.05 which generated more noise than above. If you increase the standard deviation, the amount of noise will also increase.
+
+
+### Calculus in R
+
+As you've seen so far, graphic functions plays a huge role in calculus. Knowing your basic graphs, and understanding how they are transformed is a key concept in calculus. See below for a solid cheat sheet.
+
+```{r, echo=F}
+knitr::include_graphics("https://msjagsclassroom.weebly.com/uploads/1/1/0/6/110643823/031e73d364d35daf9ec479909c966505.png") 
+```
+
+To plot up until now, we've generated values of x over some domain, and then simulated values of y to plot. 
+
+However, in R's go-to calculus package, we have more options. We'll start by downloading. 
+
+```{r message = F, error = F}
+#install.packages('remotes')
+#remotes::install_github("ProjectMOSAIC/mosaicCalc", ref="beta") # must use this version for plots
+library(mosaicCalc)
+```
+
+There are three plotting functions that are useful to us: *slice_plot()*, which works similarly to the plots we've made so far, *contour_plot()* which is for a function of two variables, and *interactive_plot()* which produces an HTML widget to interact with plots. 
+
+Lets start with a basic straight line, corresponding to $$f(x)=2x+3$$  
+
+```{r}
+slice_plot(2 * x + 3 ~ x,domain(x = range(0,10)))
+```
+
+You can see that this plot did it all in one, took our function over x, were we could set the domain within one line of code. Note how we are defining our function differently than when defined as a function.
+
+We can also use the makeFun() functionality for even more intuitive use:
+
+```{r}
+# Prespecify our function
+f <- makeFun(2 * x^2 - 5 * x + 2 ~ x)
+# Plot function over specified domain
+slice_plot(f(x) ~ x,domain(x = range(-2,2)))
+```
+And, as an added bonus, once a function is named this way in R, we can evaluate it using a given input:
+
+```{r}
+f(x = 1)
+```
+
+We can also apply functions on our function. Consider:
+
+```{r}
+slice_plot(sqrt(abs(f(x))) ~ x,domain(x = range(-5,5)))
+
+```
+
+Suppose you have a function of two variables that you want to plot, such as 
+$$ f(x,y) = \sin\left(\frac{2\pi y}{10}\right)e^{-2x}$$
+
+To do this, you need to use the *contour_plot()* function.
+
+```{r}
+f <- makeFun(sin((2*pi*y)/10)*exp(-2*x) ~ x & y)
+contour_plot(f(x,y) ~ x & y,domain(x = 0:5,y = 0:10))
+```
+
+Note that this plot is actually occurring in 3D and thus *countor_plot* is translating it to two dimensions for us. This plot can therefore be more easily interpreted in 3D using the *interactive_plot()*:
+
+```{r}
+interactive_plot(f(x,y) ~ x & y,domain(x = 0:5,y = 0:10))
+```
+
+#### Differentiaion and Integration
+
+A lot of statistical theory relies on differentiation and integration. A cheat sheet to some rules of derivatives can be found here <https://tutorial.math.lamar.edu/pdf/calculus_cheat_sheet_derivatives.pdf>.
+
+While you may find yourself solving some derivatives on pen and paper this year, you can check your work within R. The *D()* function in the mosaic package takes a mathematical expression, a tilde, and the variable with which the derivative should be taken. Of note, your statistics courses will cover the theory as needed so here we're really just focusing on show you how you can use R as a tool to check your work. 
+
+```{r}
+D(x^2 + x + 3 ~ x)
+```
+
+As you can see, this returns a function which is the derivative of the equation we fed it.
+
+If we want to solve this derivative at various values of x:
+
+```{r}
+g <- D(x^2 + x + 3 ~ x)
+g
+g(5)
+```
+
+As you can imagine, this becomes very beneficial for complicated derivatives. Consider:
+
+```{r}
+g <- D(sin(x^2) * cos(x)/tan(x) ~ x)
+g
+g(20)
+```
+
+In the above case, we can see that what is being returned is a numerical approximation to the derivative.
+
+You can also easily solve second derivatives. One option is to:
+
+```{r}
+d1 <- D(sin(x) ~ x)
+d2 <- D(d1(x) ~ x)
+d1
+d2
+```
+
+Or, in short hand form:
+
+```{r}
+D(sin(x) ~ x&x)
+```
+
+From here, you might expect that we can also solve partial derivatives which solves with respect to multiple variables! 
+
+```{r}
+pxy <- D(2*x + x*sin(y^2) ~ x & y)
+pxy
+```
+
+#### Integration
+
+Integration is simply the anti-derivative. When we integrate we are starting with the derivative and aiming to "undo" the differentiation to find the original function. 
+
+In R, we can use the *antiD* function to do this!
+
+Suppose we have:
+
+```{r}
+f <- makeFun(2*x^2 + 3*x ~ x)
+df <- D(f(x) ~ x)
+df
+antiDF <- antiD(4*x + 3 ~ x)
+antiDF
+```
+
+We can plot these using *slice_plot()*:
+
+```{r}
+slice_plot(df(x) ~ x,domain(x = -1:1))
+slice_plot(antiDF(x) ~ x,domain(x = -1:1))
+```
+
+Recall that sometimes there are many possibilities for an anti-derivative due to the addition of a constant. **By default, this function in R considers 0 as the constant.** 
+
+If we want to calculate the integral over a given domain, we can simply plug in values and subtract the difference. For example if we wanted to assess the above integral over our domain of -1 to 1, we would have:
+
+$$ \int_{-1}^{1} 4x + 3 \,dx $$
+``` {r}
+antiDF <- antiD(4*x + 3 ~ x)
+antiDF(1) - antiDF(-1)
+```
+
+
+### Linear Algebra
+
+Linear algebra is an important discipline in any kind of computation, and hence, R is well suited to evaluate traditional linear algebra problems. We've already been setting vectors, creating matrices, etc. throughout this course, so you're well versed in the basics of linear algebra in R. However, it is useful to review some of the other linear algebra functionality. 
+
+
+#### Transposing a matrix
+
+We briefly discussed matrix transposition earlier in the semester when we talked about correlation matrices. As a refresher, the transpose of a matrix is found by swapping its rows and columns, as shown in the diagram below. 
+
+```{r,echo=F}
+knitr::include_graphics("https://www.codingem.com/wp-content/uploads/2022/02/Transpose.png")
+```
+
+In R, we can use the build in function t to find the transpose of a matrix. 
+
+```{r}
+M <- matrix(1:20,nrow = 5)
+M
+
+t(M)
+```
+
+#### Matrix Multiplication
+
+Recall that if A and B are both matrices, then to multiply A And B we would follow the following diagram:
+
+```{r, echo=F}
+knitr::include_graphics("https://miro.medium.com/max/1400/1*YGcMQSr0ge_DGn96WnEkZw.png") 
+```
+
+We multiply the rows in A along the columns in B, and add between cell values. This is also called the dot product. Importantly, you must multiply and m x n matrix by an n x m matrix. 
+
+In R, we calculate this using the %*% synatx. For example:
+
+```{r}
+A <- matrix(runif(100,0,100),ncol = 10)
+B <- A + rnorm(10)
+A %*% B
+```
+
+#### Diagonals
+
+The diagonals of a matrix are often special cases, which we want to extract. To do this, we can use the *diag()* function in R. However, depending on what object we feed to *diag*, we receive very different output. 
+
+For instance, if we feed *diag()* a vector object, v, it will return a matrix with v on the diagonal. 
+
+```{r}
+v <- 1:5
+diag(v)
+```
+
+If we feed *diag()* a Matrix M, we'll return the diagonal entries of M
+
+```{r}
+M <- matrix(1:25,ncol = 5)
+M
+diag(M)
+```
+
+If we feed *diag* a constant k, we'll return a k by k identity matrix:
+
+```{r}
+diag(3)
+```
+
+For those of you new to linear algebra, note that an identity matrix is characterized by being square, having 1's on the diagonal, and 0 otherwise. 
+
+Sometimes we may be interested in extracting either the lower or upper triagular matrix, like in the following graphic:
+
+```{r, echo=F}
+knitr::include_graphics("https://dotnettutorials.net/wp-content/uploads/2022/01/word-image-259.png")
+```
+
+And we may elect to choose the diagonal as part of either matrix (or not) as the application desires. 
+
+In R, this is done by using a logical statement:
+
+```{r}
+M
+a <- upper.tri(M,diag = F)
+a
+M[a]
+ifelse(a == T,M,0)
+```
+
+#### Solving Linear Equations
+
+Matrix algebra can be fundamental in solving linear equations. 
+
+Suppose we have the following equation:
+
+$$ b = A \cdot x$$
+
+Where b and x are vectors, and A is a matrix. If we only know b and A, we can use R to find x.
+
+```{r}
+A <- diag(1:5)
+b <- 6:10
+solve(A,b)
+```
+
+So $x=(6,3.5,2.66667, 2.25,2)$.
+
+We can also use linear algebra to solve systems of equations:
+
+Suppose we have the following equations:
+
+$$ x + 5y = 1 \\
+2x -2y = 1\\
+4x + 0y = 1 $$ 
+
+In terms of vecors, we can rewrite this as:
+
+$$ x \begin{pmatrix} 1 \\ 2\\4 \end{pmatrix} + y \begin{pmatrix} 5 \\ -2 \\ 0 \end{pmatrix} = \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix} $$
+
+
+Lets call each vector on the LHS v, and the the vector on the RHS b:
+
+```{r}
+v <- c(1,2,4) 
+v2 <- c(5,-2,0)
+b <- c(1,1,1)
+```
+
+We can then solve this system of equations by projecting $b$ into the space defined by $v_1$ and $v_2$. 
+
+```{r}
+project(b ~ v + v2)
+```
+
+Hence, $x=0.3289$ and $y=0.092$. 
+
+Notice that these values do not 'exactly' solve the linear system, but rather, it provides the the solutions that come closest to creating the right answer by relying on numerical methods. 
+
+#### Eigenvlues and Eigenvectors
+
+One of the most common uses of linear algebra in statistics and data science is the concept of finding the eigenvalues or eigen vectors. Eigen is a german word, meaning 'typical', and in English we sometimes think of this as being "characteristic". So when we say we are finding eigen vectors what we are looking for is the characteristic vector of a matrix, meaning its preserves information about the matrix in lower dimensions. 
+
+This concept is used all the time. Its the foundation of PCA's. We use the concept of an 'eigen gene' in a pathway-based network analysis of genetic data called Weighted Gene Correlation Network Analysis (WGCNA). Eigenvectors are also a foundational theory behind google's page rank algorithm. You'll see this concept over and over and over again. 
+
+We can use the *eigen()* function in R to easily obtain these values.
+
+```{r}
+A
+eigen(A)
+```
+
+You can also easily identify the determinants of a matrix in R, to check any work you may be doing by hand in calculating eigenvalues:
+
+```{r}
+A
+det(A)
+```
+
+#### Singular Value Decomposition
+
+Singular value decompostion, or SVD, is another popular linear algebra idea which is commonly used in data science (particularly machine learning). SVD is a factorization of a matrix into three matrices. Similarly we can easily obtain this in R using the *svd()* function.
+
+```{r}
+M
+svd(M)
+```

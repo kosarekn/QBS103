@@ -1,0 +1,88 @@
+---
+title: 'Table Formatting in R'
+author: "QBS 103: Foundations of Data Science"
+date: "August 15, 2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Lesson Objectives
+
+##### At the end of this lecture you should be able to:
+1. Format tables for markdown and LaTeX
+2. Build a function to produce a "Table One"
+3. Implement R script dependencies
+
+
+### Additional Resources
+
+Creating formatted tables in markdown: https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html
+
+
+### Formatting Tables
+
+As we've seen so far, tables outputted by R are not the most aesthetically pleasing. This is fine if we're just exporting the table as a csv for formatting elsewhere (like discussed earlier this lecture) but sometimes, you might want to include a nicely formatted table in an R markdown file or slides for a presentation. The **knitr** package allows us to use LaTeX style formatting in R. 
+
+In the epidemiology and data science communities, a table summarizing the demographics of a study population is typically referred to as a "table one". Such a table might look like this.
+
+``` {r message = F, warning = F}
+
+library(tidyverse)
+library(knitr) # for base kable function
+library(kableExtra) # for formatting 
+
+# Define Table
+table1 <- data.frame('Variable' = c('Age mean (sd)','Sex n (%)',
+                                    "Female","Male"),
+                     "Value" = c('35 (2)','','10 (25.0)','30 (75.0)'))
+
+# Print table using kable
+tab <- kable(x = table1, caption = 'Summary Table',
+             format = 'latex',booktabs = T,
+             col.names = c("Variable", "n = 40"),
+             align = c('l','r'),escape = T) %>%
+  add_indent(positions = c(3,4),level_of_indent = 1)
+tab
+```
+
+Note: you can also run this in your console and it will give you the formatted text to generate this table directly in LaTeX. Just make sure you include "usepackage{booktabs}" at the start of your document if you have "booktabs = T" in your code.
+
+
+### R Script Dependencies
+
+When organizing your code, sometimes it may be easier to define a function that you will be using across multiple scripts and then call it independently. We can do this using the *source* function in base R. 
+
+The source function will run through an entire R script and you will see all the generated variables and functions appear in your current R Environment. So, if you have a file with your saved functions, you can just run that file rather than defining the function in each R script that you need it in. 
+
+``` {r}
+
+# Define location of the file with the function on your computer
+source('TableOne.R')
+
+# Define data set to use
+set.seed(3927)
+randomData <- data.frame(Cont1 = rnorm(n = 1000,mean = 50,sd = 10),
+                         Cont2 = rnorm(n = 1000, mean = 23,sd = 2),
+                         Cont3 = rexp(n = 1000,rate = 0.25),
+                         Cat1 = factor(rbinom(n = 1000,size = 1,prob = 0.50),
+                                       labels = c(F,T)),
+                         Cat2 = factor(rbinom(n = 1000,size = 1,prob = 0.25),
+                                       labels = c(F,T)),
+                         Cat3 = factor(rbinom(n = 1000,size = 2,prob = 0.40),
+                                       labels = c('A','B','C')))
+
+
+buildTableOne(data = randomData,varList = c('Cont1','Cont2','Cat1','Cont3','Cat2','Cat3'),
+              nonnormVars = 'Cont3',catVars = c('Cat1','Cat2','Cat3'))
+
+```
+
+
+
+### In Class Activity 2
+
+Design your own function in a seperate R script to build a table one like the one demonstrated above. Users should input a data frame and how different variables should be treated (i.e. normally or non-normally distributed, categorical). Copy your resulting table into the .tex file you've built for this lecture. 
