@@ -2,28 +2,36 @@ Good Day QBS 103 Crew!
 
 Please work in groups to solve the problems provided in our very first in class assignment. If you complete this early, you are free to leave before our class time runs out. If you are unable to complete these exercises before the end of class, you can continue at home, though it is not required that you do so. These will not be graded!
 
-1) Below I have generated a beautiful vector of "things" for you. Using code, can you tell me the type of data of each "thing" in the vector?
+1) Below I have assigned "things" to variables. Using code, can you tell me the type of data of each "thing" is?
 ```{r setup, include=TRUE}
-my_vector <- c(3.14, "pie", 3)
+a <- 3.14
+b <- "pie"
+c <- 3
+
+str(a)
+str(b)
+str(c)
+
 numeric
 character
-integer
+numeric
 ```
 
-2) Create a nested vector in the code chunk below. This vector should contain one vector of integers, one vector of float numbers, and one vector of strings or characters.
+2) Create a nested list in the code chunk below. This list should contain one vector of integers, one vector of float numbers, and one vector of strings or characters.
 ```{r}
-my_vector <- c(c(1,2,3), c(1.11,2.22,3.33),c("a","b","c"))
+my_list <- list(c(1,2,3), c(1.11,2.22,3.33),c("a","b","c"))
+str(my_list)
 ```
 
 3) I have provided you with a vector of float numbers. Please convert these float numbers to integers and save the output vector to a vector called "my_integers".
 ```{r}
-my_floats <- c(1.67, 1.11, 2.25, 8.88, 6.67, 104874587645776.2)
+my_floats <- c(1.67, 1.11, 2.25, 8.88, 6.67, 1048.2)
 
 my_integers <- as.integer(my_floats)
 my_integers
 ```
 
-4) The vector of words was taken from a 2020 Science article about rheumatoid arthritis (RA) associated joint damage. If you are interested in accessing the whole article it can be found [here](https://www.science.org/doi/10.1126/sciadv.abd2688). Using this vector of word and your recently acquired programming skills, select the word "rheumatoid" and print it out.
+4) The vector of words was taken from a 2020 Science article about rheumatoid arthritis (RA) associated joint damage. If you are interested in accessing the whole article it can be found [here](https://www.science.org/doi/10.1126/sciadv.abd2688). Using this vector of words and your recently acquired programming skills, select the word "rheumatoid" and print it out.
 
 ```{r}
 arthritis <- c("Formation", "of", "autoantibodies", "to", "carbamylated", "proteins", "(anti-CarP)", "is", "considered", "detrimental", "in", "the", "prognosis", "of", "erosive", "rheumatoid", "arthritis", "(RA).", "The", "source", "of", "carbamylated", "antigens", "and", "the", "mechanisms", "by", "which", "anti-CarP", "antibodies", "promote", "bone", "erosion", "in", "RA", "remain", "unknown.", NA, "Here,", "we", "find", "that", "neutrophil", "extracellular", "traps", "(NETs)", "externalize", "carbamylated", "proteins", "and", "that", "RA", "subjects", "develop", "autoantibodies", "against", "carbamylated", "NET", "(cNET)", "antigens", "that,", "in", "turn,", "correlate", "with", "levels", "of", "anti-CarP.", "Transgenic", "mice", "expressing", "the", "human", "RA", "shared", "epitope", "(HLADRB1*", "04:01)", "immunized", "with", "cNETs", "develop", "antibodies", "to", "citrullinated", "and", NA, "carbamylated", "proteins.", "Furthermore,", "anti–carbamylated", "histone", "antibodies", "correlate", "with", "radiographic", "bone", "erosion", "in", "RA", "subjects.", "Moreover,", "anti–carbamylated", "histone–immunoglobulin", "G", "immune", "complexes", "promote", "osteoclast", "differentiation", "and", "potentiate", "osteoclast-mediated", NA, "matrix", "resorption.", "These", "results", "demonstrate", "that", "carbamylated", "proteins", "present", "in", "NETs", "enhance", "pathogenic", "immune", "responses", "and", "bone", "destruction,", "which", "may", "explain", "the", "association", "between", "anti-CarP", "and", "erosive", NA, "arthritis", "in", "RA.")
