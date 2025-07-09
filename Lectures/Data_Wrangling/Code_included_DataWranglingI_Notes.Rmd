@@ -1,0 +1,482 @@
+---
+title: "Data Wrangling I"
+author: "Meghan Muse"
+date: "July 11, 2024"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Lesson Objectives
+
+##### At the end of this lecture you should be able to:
+
+1.  Generate random data
+2.  Derive new variables and subset data frames based on your existing data
+3.  Move between long and wide formatted data
+4.  Produce basic boxplots and scatter plots using ggpubr
+5.  Perform basic manipulation of character strings
+
+### Resources
+
+Overview of ggpubr: <https://rpkgs.datanovia.com/ggpubr/>
+
+Examples of reshape2 package: <https://seananderson.ca/2013/10/19/reshape/>
+
+Wide vs long data frames\*: <https://www.youtube.com/watch?v=pHPgMNXyzqc>
+
+$~$
+
+### Generating Random Data
+
+For this lecture, we will start by generating a new data set. To generate random variables, we can use the *rnorm* and *rbinom* functions.
+
+```{r}
+
+# Define a variable of random systolic blood pressure
+rnorm(n = 10,mean = 128.4,sd = 19.6)
+
+```
+
+Did you get the same values as me? Why or why not?
+
+$~$
+
+```{r}
+ set.seed(103)
+rnorm(n = 10,mean = 128.4,sd = 19.6) 
+
+rnorm(n = 10,mean = 128.4,sd = 19.6)
+
+set.seed(103)
+rnorm(n = 10,mean = 128.4,sd = 19.6)
+```
+
+What do you think the set seed function does?
+
+Helps control the start of random number generation. Computers generate pseudorandom numbers through an algorithm and this helps keep consistent results across different instances of running a piece of code.
+$~$
+
+#### Many functions in R incorporate some level of randomziation such as sampling, some clustering algorithms, and some plotting functions. Always be aware of if you are using randomization, and always ensure that your code and results are reproducible by using the *set.seed()* function.
+
+$~$
+
+Now let's generate a random binary variable
+
+```{r}
+ set.seed(103)
+rbinom(n = 10,size = 1,prob = 0.5)
+
+rbinom(n = 10,size = 10,prob = 0.5)
+```
+
+What does the "size" parameter change? If we were creating a binary variable like biological sex, what would you set it as?
+
+Size changes the number of instances per trial (ex. simulating the results of 1 or 10 coin flips). Essentially, how many trials went into determining the number you see? Because in biological sex there is only one trial per an individual's biological sex, the size parameter should be 1 $~$
+
+```{r}
+ set.seed(103)
+mean(rbinom(n = 100,size = 10,prob = 0.5))
+
+ set.seed(103)
+mean(rbinom(n = 100,size = 10,prob = 0.7))
+```
+
+What does the "prob" parameter change? When might you use different values here? Here for 100 trials with 10 instances per trial (and taking the average of the addition of successes across instances per trial, the average number of successes (flipping a coin to heads) was 5). This went up to 7, so the likelihood of success increases when we increased the probability to 0.7
+
+The chance of a "success" (e.g., getting a head in a coin toss, a defective item, a patient responding positively) in each trial increases from 50% to 70%.
+
+$~$
+
+Okay now lets build a toy dataset
+
+```{r}
+
+# Set a random seed
+set.seed(103)
+
+# Define a data frame with our randomly generated data
+randomData <- data.frame('SubjectID' = seq(1:1000), 
+                         'systolicBP' = rnorm(n = 1000,mean = 128,sd = 20),
+                         'diastolicBP' = rnorm(n = 1000,mean = 71,sd = 10),
+                         'Age' = trunc(runif(n = 1000,min = 18,max = 70)),# trunc removes decimals
+                         'Male' = rbinom(n = 1000,size = 1,prob = 0.5))
+
+# Take a peak at the top entries for our dataset 
+head(randomData)
+
+# Assess the mean and standard deviation for systolic blood pressure
+mean(randomData$systolicBP)
+
+sd(randomData$systolicBP)
+
+# Visualize the distribution of diastolic blood pressure
+hist(randomData$diastolicBP,main = 'Randomly Generated Data',xlab = 'Diastolic Blood Pressure (mmHg)')
+
+
+# Visualize the distribution of age
+hist(randomData$Age,main = 'Randomly Generated Data',xlab = 'Age (years)')
+```
+
+What differences do you notice in the distribution of these two variables?
+
+One is normally distributed and one is more uniformly distributed. 
+
+$~$
+
+```{r}
+# Check the distribution of our variables
+summary(randomData)
+```
+
+Is it summarizing the factor variable the way we want? Why or why not?
+
+No, it is not treating it as a factor (as in summarizing counts of Male vs not Male), rather it is treating it as a number and giving an average ( I mean its nice to see the gender distribution is about even, but it is not giving me a summary of the factor the way I would expect gender to be summarized)
+
+$~$
+
+### Deriving New Variables
+
+Lets try converting the binary variable to a more logical format
+
+```{r}
+
+# Define a new factor variable from an old binary
+
+randomData$BiologicalSex <- factor(ifelse(randomData$Male == 1,'Male','Female'))
+
+# Re-check the distribution of our variables
+summary(randomData)
+str(randomData)
+```
+
+$~$
+
+We can also generate a new binary variable from a continuous variable
+
+```{r}
+
+# Define variable specifying age above 65 (medicare eligible)
+
+randomData$MedicareAge <- ifelse(randomData$Age < 65,F,T)
+
+# Re-check the distribution of our variables
+summary(randomData)
+
+```
+
+### Subsetting Data
+
+We can subset a data frame in a few ways
+
+```{r}
+
+# Subset to only those at medicare age
+medicareData1 <- randomData[which(randomData$MedicareAge == T),] 
+medicareData2 <- randomData[which(randomData$Age >= 65),] # another way
+
+# We can use the following statement to ensure both methods produced the same result
+all(medicareData1 == medicareData2)
+```
+
+$~$
+
+Now we can look at the distribution in diastolic blood pressure just among individuals meeting a given age cutoff
+
+```{r}
+par(mfrow=c(1,2))
+# Visualize the distribution of diastolic blood pressure in Medicare Only
+hist(medicareData1$diastolicBP,main = 'Randomly Generated Data: Medicare Eligible Only',xlab = 'Diastolic Blood Pressure (mmHg)')
+
+# Visualize the distribution of diastolic blood pressure in full dataset
+hist(randomData$diastolicBP,main = 'Randomly Generated Data: Full Cohort',xlab = 'Diastolic Blood Pressure (mmHg)')
+```
+
+Does the distribution in the subsetted data look any different than in the full data set? Should it?
+
+the Medicare Data was derived from the full dataset, and thus the data both consist of random variables from the same distribution, so it makes sense that the data look the same. Also we didn't make the random number generation of blood pressure tied to the random generation of any other number, so there won't be anything actually creating dependency between those variables.
+
+### Basic Plotting Using *ggpubr*
+
+```{r}
+
+# Run the following line of code one time to install the package if you haven't already
+#install.packages('ggpubr')
+library(ggpubr)
+
+# Generate a scatter plot of age by systolic blood pressure
+ggpubr::ggscatter(randomData,x = 'Age',y = 'systolicBP')
+
+# Generate a boxplot for diastolic blood pressure distribution by biological sex in our original dataset
+ggpubr::ggboxplot(randomData,x = 'BiologicalSex',y = 'systolicBP',xlab = 'Biological Sex', ylab = 'Systolic Blood Pressure (mmHg)')
+```
+
+Was there any visual association between age or sex and blood pressure?
+
+Would we expect there to be based on how we generated the data? 
+
+No for the same reason that there was no difference expected by age when we subset individuals who qualified for medicare.
+
+$~$
+
+What if we want to look at systolic and diastolic blood pressure in the same plot? To do this, we need to convert our data to a long format.
+
+### Wide vs Long Dataframes
+
+**Wide** format data will have each subject in a single row and then multiple measures related to that subject in a unique column.
+
+```{r}
+# Wide format data
+data.frame('PatientID' = c('P001','P002','P003'),
+                          'Age' = c(24,35,27),
+                          'Height.in' = c(67,70,64))
+```
+
+Sometimes, it is advantageous to have our data in a **long** format where every variable for every subject is in a different row.
+
+```{r}
+# Wide format data
+data.frame('PatientID' = c('P001','P001','P002','P002','P003','P003'),
+           'Measure' = c('Age','Height.in','Age','Height.in','Age','Height.in'),
+           'Value' = c(24,67,35,70,27,64))
+```
+
+While this might seem odd for this type of use case, it is a very useful tool for datasets with **repeated measures**, i.e. measurements taken over time like this:
+
+```{r}
+# Wide format repeated measures
+data.frame('PatientID' = c('P001','P002','P003'),
+           'Height.in.5y' = c(40,43,39),
+           'Height.in.10y' = c(53,58,51))
+```
+
+```{r}
+# Long format repeated measures
+data.frame('PatientID' = c('P001','P001','P002','P002','P003','P003'),
+           'Age.yrs' = c(5,10,5,10,5,10),
+           'Height.in' = c(40,53,43,58,39,51))
+```
+
+### Long Format Data
+
+Currently, our data is in a **wide** format because each subject is only in a single row and all measures from that subject are in columns. There are a few different ways to convert between wide an long format data.
+
+To achieve this today, we will use the *melt* function from the package *reshape2*. Next class, we will discuss how to achieve this in *tidyverse*.
+
+```{r}
+# Run the following line of code one time to install the package if you haven't already
+#install.packages('reshape2')
+library(reshape2)
+
+# collapse down blood pressure types into one column
+longData <- reshape2::melt(randomData[,c('SubjectID','systolicBP','diastolicBP','Age','BiologicalSex')],
+              id.vars = c('SubjectID','Age','BiologicalSex'),value.name ='BP',variable.name= 'BP.Type')
+
+# Check entries for our first subject
+longData[longData$SubjectID == 1,]
+
+
+# How it would look if we forgot one of our ID variables (biological sex)
+longData2 <- reshape2::melt(randomData[,c('SubjectID','systolicBP','diastolicBP','Age','BiologicalSex')],
+              id.vars = c('SubjectID','Age'),value.name ='BP',variable.name= 'BP.Type')
+
+longData2[longData2$SubjectID == 1,] # checking the values we have by subject ID for a random subject
+
+# Because we did not specify that it was a variable we are identifying as its own characteristic of the subject, 
+# the biological sex variable will just be categorized as a type of variable of that subject (blood pressure)
+
+```
+
+$~$
+
+We can also use the *order* function to ensure that all our subjects values are listed in sequence in the table or to look at subjects who have the oldest age easily
+
+```{r}
+# Print first 20 values
+
+longData$Age[1:20] # currently the data is all disordered 
+
+order(longData$Age)[1:20] # not anymore!
+```
+
+What does the *order* function return?
+Returns the vector input by ascending order!
+
+```{r}
+longData$Age[14]
+
+longData[order(longData$Age),'Age'][1:20]
+
+```
+
+$~$
+
+```{r}
+# Order by subject ID
+
+head(longData[order(longData$SubjectID,decreasing = F),])
+
+# Order by decreasing age
+
+head(longData[order(longData$Age,decreasing = T),])
+```
+
+$~$ The order function can be particularly helpful when trying to merge two data frames and want to first ensure that subjects or samples are in the same order in each data frame.
+
+### Manipulating Character Strings
+
+If we don't like the end of systolic and diastolic labels having "BP" we can remove it using the *sub* function.
+
+```{r}
+
+# Look for cases of "BP" and replace with ""
+
+longData$BP.Type <- sub(pattern = 'BP',replacement = '',x = longData$BP.Type)
+
+# Now lets see what values we have for this variable
+table(longData$BP.Type)
+
+# We could also just replace the values using indexing as follows
+longData[which(longData$BP.Type == 'systolic'),'BP.Type'] <- 'Systolic' 
+longData[which(longData$BP.Type == 'diastolic'),'BP.Type'] <- 'Diastolic'
+
+# Now lets check again what values we have for this variable
+table(longData$BP.Type)
+```
+
+*sub* and *gsub* can both be used to search and replace in character strings. Can you identify the difference between what each one does?
+
+```{r}
+
+# Define a list of character strings
+charStrings <- c('QBS Graduate Program at Dartmouth College','QBS 103','QBS! QBS! QBS!')
+
+# sub function
+sub(pattern = 'QBS',replacement = 'Dartmouth',x = charStrings)
+
+
+# gsub function
+
+gsub(pattern = 'QBS',replacement = 'Dartmouth',x = charStrings)
+
+
+
+```
+
+$~$
+# gsub replaces all instances in a character string. sub only replaces the first instance
+This may seem easy enough to do on your own, but sometimes you will have large lists of character strings between two dataframes that have been entered in different formats.
+
+Here, I have 2 lists of sample IDs that I need to make sure are in the same order in both lists but you can see, they are formatted differently across both lists.
+
+```{r}
+# Define two lists of sample names
+d1 <- c('20210323_PB4_01_09.RCC','20210323_PB4_01_11.RCC','20210323_PB4_01_12.RCC','20210401_ch5-040121_01_01.RCC','20210401_ch5-040121_01_02.RCC','20210401_ch5-040121_01_02.RCC','20210401_ch5-040121_01_03.RCC')
+d2 <- c('20210323-PB4_01_11.RCC','20210323-PB4_01_12.RCC','20210323-PB4_01_09.RCC','20210401-ch5-040121-01-01.RCC','20210401-ch5-040121-01-02.RCC','20210401-ch5-040121-01-02.RCC','20210401-ch5-040121-01-03.RCC')
+
+# Check if same samples are in both lists
+table(d1 %in% d2)
+
+# Compare formatting 
+head(d1)
+head(d2)
+
+```
+
+$~$ We can change the formatting using *gsub*
+
+```{r}
+# Replace all "_" with "-" in list of sample names
+d1 <- gsub(d1,pattern = '_',replacement = '-') 
+d2 <- gsub(d2,pattern = '_',replacement = '-')
+
+# Verify all names in d1 are now also in d2
+table(d1 %in% d2)
+
+# Check if D1 and D2 are in the same order
+table(d1 == d2)
+
+# Reorder both vectors
+d1 <- d1[order(d1)] 
+d2 <- d2[order(d2)]
+
+# Check if D1 and D2 are in the same order
+table(d1 == d2)
+
+```
+
+### Adding Color to Our *ggpubr* Plots
+
+Now we can go back and generate out plots with both measures of blood pressure in one plot.
+
+```{r}
+
+# Generate a scatter plot of age by systolic blood pressure
+ggpubr::ggscatter(longData,x = 'Age',y = 'BP',color = 'BP.Type')
+
+# Generate a boxplot for diastolic blood pressure distrubition by biological sex in our original dataset
+ggpubr::ggboxplot(longData,x = 'BP.Type',y = 'BP',color = 'BiologicalSex',
+                  ylab = 'Blood Pressure (mmHg)',xlab = '')
+
+```
+
+What are some other cases you can think of where it might make sense to have your data in a long vs wide format?
+
+When subsetting data or creating summary tables, it is useful to be able to switch between long and wide formats.Also to look back at the original data
+
+### Converting Back to Wide Format Data
+
+We can also change our data back into a **wide** format using the *cast* function as follows:
+
+```{r}
+
+# Cast into a data frame
+wideData <- reshape2::dcast(longData,formula = SubjectID + Age + BiologicalSex ~ BP.Type,value.var = "BP")
+# Note: using dcast because we want a dataframe as output. 
+# If we want a vector or matrix as output, we use acast
+
+# Lets see if our data look the same as when we started
+head(wideData)
+# Our original data set
+head(randomData)
+
+```
+
+We can also use the *dcast* function to make summary values. For example, what if we wanted to known the average BP for males and females based on their age group.
+
+```{r}
+
+# Generate table (note here we drop subject ID from the formula)
+summaryTable <- reshape2::dcast(longData,formula = Age + BiologicalSex ~ BP.Type, fun.aggregate = mean,value.var = 'BP')
+
+# Check the dimmensions 
+dim(summaryTable)
+
+# Look at the top enteries
+head(summaryTable)
+
+```
+
+We can also use this to tabulate how many observations there are for each category
+
+```{r}
+
+# Generate table (note here we drop subject ID from the formula)
+summaryTable <- reshape2::dcast(longData,formula = Age + BiologicalSex ~ BP.Type, fun.aggregate = length,value.var = 'BP')
+# Check the dimmensions 
+dim(summaryTable)
+
+# Look at the top enteries
+head(summaryTable)
+
+```
+
+### In Class Activity
+
+Working in groups, define a new variable for hypertension in our original dataset (randomData). Here we will define hypertension as systolic blood pressure over 130 or a diastolic blood pressure over 80. Plot the distrubution in age for individuals with and without hypertension using boxplots.
+
+Use the *melt* function to generate boxplots of the distribution of systolic and diastolic blood pressure in hypertensive vs. normotensive individuals (color should be based on hypertension status).
+
+Use the *dcast* function to generate a table summarizing the mean age, systolic, and diastolic BP for males and females, seperately, with and without hypertension. Your table should have 4 rows. Order your table output such that it lists values for normotensive individuals first and hypertensive individuals second.
