@@ -1,0 +1,89 @@
+---
+title: "In Class Solutions: Data Visualization"
+author: "QBS 103"
+date: "July 13, 2023"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### In Class Activity
+
+Using the same data we've generated in class thus far, recreate the following plot:
+
+``` {r message = F, warning = F}
+# Load packages
+library(tidyverse) # note: tidyverse includes ggplot2
+
+# Set a random seed
+set.seed(103)
+
+# Define a data frame with our randomly generated data
+randomData <- data.frame('SubjectID' = seq(1:1000), 
+                         'Systolic.BP' = rnorm(n = 1000,mean = 128,sd = 20),
+                         'Diastolic.BP' = rnorm(n = 1000,mean = 71,sd = 10),
+                         'Age' = trunc(runif(n = 1000,min = 18,max = 70)),
+                         'Male' = rbinom(n = 1000,size = 1,prob = 0.5))
+# Define binary variable for biological sex
+randomData$BiologicalSex <- factor(ifelse(randomData$Male == 1,'Male','Female'))
+# Define variable specifying age above 65 (medicare eligible)
+randomData$MedicareAge <- ifelse(randomData$Age < 65,F,T)
+# Define a variable for hypertension
+randomData$Hypertension <- ifelse(randomData$Systolic.BP > 130 | randomData$Diastolic.BP > 80,
+                                  'Hypertensive','Normotensive')
+
+# Make more categories in our data
+randomData$AgeGroup <- cut(randomData$Age,breaks = c(0,30,40,50,60,70),
+                           labels = c('Under 30','30-40','40-50','50-60','60-70'))
+```
+
+``` {r}
+
+# Define theme
+newTheme <- theme(
+  # Remove all borders and grid lines
+  panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), 
+  # Set axis colors and size 
+  axis.line = element_line(colour = "white", linewidth = rel(2)),
+  # Change all colors to light blue
+  plot.background = element_rect(fill = "black"),
+  panel.background = element_blank(),
+  legend.key = element_rect(fill = 'black'), 
+  legend.background = element_rect(fill = 'black'),
+  # Set font
+  text = element_text(face="bold",colour = "white"),
+  axis.text = element_text(face="bold",colour = "white"),
+        legend.position = 'bottom')
+
+# Define a color palette
+colorPalette <- rev(wesanderson::wes_palette(c('Royal2'),n = 5))
+
+# Calculate mean systolic bp
+meanBP <- round(mean(randomData$Systolic.BP),digits = 2)
+
+# Generate plot
+ggplot(randomData,aes(x = Age,y = Systolic.BP,color = AgeGroup)) +
+  geom_point() +
+  scale_color_manual(values = colorPalette) +
+  labs(x = "Age (yrs)",y = "Systolic Blood Pressure (mmHg)",color = "Age") +
+  geom_vline(xintercept = 30, linetype = 'dashed',color = colorPalette[1]) +
+  geom_vline(xintercept = 40, linetype = 'dashed',color = colorPalette[2]) +
+  geom_vline(xintercept = 50, linetype = 'dashed',color = colorPalette[3]) +
+  geom_vline(xintercept = 60, linetype = 'dashed',color = colorPalette[4]) +
+  geom_vline(xintercept = 70, linetype = 'dashed',color = colorPalette[5]) +
+  annotate(geom = 'text',x = 45,y = 220,label = paste('Mean Systolic Blood Pressure:',meanBP,'mmHg'),color = 'white') +
+  newTheme
+
+```
+
+Hints: 
+
+1. The color palette is "Royal2" from the *wesanderson* package but can you think of how you might still reproduce this without knowing that? **You can also find colors using different hex identifier resources.**
+
+2. You can change the font in a theme using variations of "text" which you can find in the documentation of the *theme()* function.
+
+3. Look up the documentation for *geom_hline* and *geom_vline*.
