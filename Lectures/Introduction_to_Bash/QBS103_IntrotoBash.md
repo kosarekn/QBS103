@@ -199,7 +199,10 @@ The `.bash_profile` is run every time you start a bash session and contains vari
 
 ```bash{cmd}
 # use the nano text editor to add the line ' LIST="ls" ' to your bash_profile
-nano `~/.bash_profile`
+nano ~/.bash_profile
+
+# You may also need to provide yourself permission using sudo:
+sudo nano ~/.bash_profile
 
 # source the new bash_profile to add the environment variables to your current session (or start a new bash session)
 source ~/.bash_profile
