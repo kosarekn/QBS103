@@ -225,10 +225,10 @@ You will notice that I chose a directory name with no spaces. The space is a spe
 cd /Users/f002yt8/Documents
 
 # Make the directory.
-mkdir -p /QBS103
+mkdir -p QBS103_dup
 
 # Change to the newly-created directory.
-cd /QBS103
+cd QBS103_dup
 
 # Create a variable so we can get here quickly
 QBS="/Users/f002yt8/Documents/QBS103"
@@ -236,6 +236,10 @@ QBS="/Users/f002yt8/Documents/QBS103"
 ###############
 # Add variable definition to .bash_profile
 nano ~/.bash_profile
+
+# You may also need to provide yourself permission using sudo:
+sudo nano ~/.bash_profile
+
 # copy and paste the definition above
 ###############
 
