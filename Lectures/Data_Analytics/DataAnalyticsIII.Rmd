@@ -16,7 +16,6 @@ knitr::opts_chunk$set(echo = TRUE)
 2. Apply a single function across multiple rows/columns
 3. Build a simple correlation plot
 4. Build a heatmap
-5. Implement R script dependencies
 
 
 ### Additional Resources
@@ -205,14 +204,14 @@ First, let's generate a new data set with 20 different continuous, normally dist
 ``` {r}
 
 set.seed(1234)
-#
+# Building empty data set
 randomData2 <- as.data.frame(matrix(nrow = 100,ncol = 20))
-#
+# Generate 20 column names
 colnames(randomData2) <- paste0('contVar',seq(1:ncol(randomData2)))
-#
+# Generate random means and SDs
 means <- runif(20,min = 10,max = 30)
 sds <- runif(20,min = 0.5,max = 5)
-#
+# Generate 20 normally distributed variables
 for (i in 1:ncol(randomData2)) {
   randomData2[,i] <- rnorm(100,mean = means[i],sd = sds[i])
 }
@@ -394,10 +393,10 @@ Now, we can use the apply function to calculate these values quickly for all the
 # Calculate variance of each miRNA
 variance <- apply(miRNA,MARGIN = 1,FUN = var)
 # Order rows of miRNA so that highest variance in expression is on top
-miRNA <- miRNA[order(variance,decreasing = T),]
+miRNA2 <- miRNA[order(variance,decreasing = T),]
 
 # Log2-normalize data for plotting
-log2.miRNA <- log2(miRNA)
+log2.miRNA <- log2(miRNA2)
 
 ```
 
@@ -409,7 +408,7 @@ Now that we have our data ready, we can generate a very simple heatmap.
 library(pheatmap)
 
 # Generate heatmap without clustering
-pheatmap(log2.miRNA[1:20,],
+pheatmap(log2.miRNA[700:720,],
          cluster_rows = F,
          cluster_cols = F)
 
