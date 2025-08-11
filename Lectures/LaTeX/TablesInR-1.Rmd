@@ -61,7 +61,7 @@ The source function will run through an entire R script and you will see all the
 ``` {r}
 
 # Define location of the file with the function on your computer
-source('/Users/f002yt8/Documents/QBS103/QBS103_24X/LectureNotes/LaTeX/TableOne.R')
+source('/Users/f002yt8/Documents/GitHub/QBS103/Lectures/LaTeX/TableOne.R')
 
 # Define data set to use
 set.seed(3927)
