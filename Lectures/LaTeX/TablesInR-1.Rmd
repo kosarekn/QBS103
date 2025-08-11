@@ -32,21 +32,21 @@ In the epidemiology and data science communities, a table summarizing the demogr
 ``` {r message = F, warning = F}
 
 library(tidyverse)
-library(knitr) # for base kable function
-library(kableExtra) # for formatting 
+library(knitr)
+library(kableExtra)
 
-# Define Table
-table1 <- data.frame('Variable' = c('Age mean (sd)','Sex n (%)',
-                                    "Female","Male"),
-                     "Value" = c('35 (2)','','10 (25.0)','30 (75.0)'))
+table1 <- data.frame(
+  Variable = c('Age mean (sd)', 'Sex n (%)', 'Female', 'Male'),
+  Value    = c('35 (2)', '', '10 (25.0)', '30 (75.0)')
+)
 
-# Print table using kable
-tab <- kable(x = table1, caption = 'Summary Table',
-             format = 'latex',booktabs = T,
-             col.names = c("Variable", "n = 40"),
-             align = c('l','r'),escape = T) %>%
-  add_indent(positions = c(3,4),level_of_indent = 1)
-tab
+kable(table1,
+      format = "latex",
+      booktabs = TRUE,
+      col.names = c("Variable", "n = 40"),
+      caption = "Summary Table",
+      align = c("l","r"),
+      escape = TRUE)
 ```
 
 Note: you can also run this in your console and it will give you the formatted text to generate this table directly in LaTeX. Just make sure you include "usepackage{booktabs}" at the start of your document if you have "booktabs = T" in your code.
@@ -61,7 +61,7 @@ The source function will run through an entire R script and you will see all the
 ``` {r}
 
 # Define location of the file with the function on your computer
-source('TableOne.R')
+source('/Users/f002yt8/Documents/QBS103/QBS103_24X/LectureNotes/LaTeX/TableOne.R')
 
 # Define data set to use
 set.seed(3927)
@@ -85,4 +85,4 @@ buildTableOne(data = randomData,varList = c('Cont1','Cont2','Cat1','Cont3','Cat2
 
 ### In Class Activity 2
 
-Design your own function in a seperate R script to build a table one like the one demonstrated above. Users should input a data frame and how different variables should be treated (i.e. normally or non-normally distributed, categorical). Copy your resulting table into the .tex file you've built for this lecture. 
+Design your own function in a separate R script to build a table one like the one demonstrated above. Users should input a data frame and how different variables should be treated (i.e. normally or non-normally distributed, categorical). 
