@@ -1,0 +1,31 @@
+---
+title: "Introduction_to_Machine_Learning_In_Class_Exercises"
+output: pdf_document
+date: "2025-07-14"
+---
+
+1) Install the "AppliedPredictiveModeling" R package. Load the data set called "AlzheimerDisease". This data set was published by Craig-Schapiro et al. in 2011 and describes a clinical study of 333 patients where laboratory measurements are used to predict which subjects are most likely to develop cognitive impairment based on a few biological measurements. When you load the data, you will notice two data frames, one holds the predictor variables and the other holds the diagnosis. Combine these data frames.
+
+a) After combining the data frames and checking for missingness, split the data into 2/3 training and 1/3 testing. 
+b) Train an elastic net model with bootstrapping 10 samples. Use all of the variables in the data frame to predict the outcome. When training the model make sure to include the following: `preProcess = c("center", "scale")` and `tuneLength = 10`. Elastic net models apply L1 and L2 penalties that depend on the magnitude of the coefficients, which directly depends on the sale of the predictors. Centering and scaling the data makes all features comparable on the same scale, so the penalty treats them fairly. tuneLength tells CARET to try different values for some of these penalties. Discussof these penalities are beyond the scope of this class, so let's just set it to 10 here. 
+c) After tuning the model, make predictions on the testing set. Report the accuracy and gnerate a confusion matrix. 
+```{r}
+
+```
+2) Create a variable importance plot of the top 10 most important variables for this data set. Save this plot to your local machine. Include appropriate main titles as well as x- and y- axes. 
+```{r}
+
+```
+3) Install the package "PRROC". You can use this package to generate a Precision-Recall Curve. This plot visualizes the trade off between precision or positive predictive value and recall, also known as sensitivity, across different classification threshold. Sensitivity measures the ability of a classification model to correctly identify positive instances (cases). The positive predictive value measures the proportion of positive predictions made by the model that are actually correct. Use the function `pr.curve()` to generate a Precision-Recall Curve for the "Impaired" outcome.
+```{r}
+
+```
+4) In the previous model, we used all of the variable to predict the outcome. In question 2, we identified the top 10 most important variables. Re-run the same model, but using only the top 10 most important features. Report the accuracy of this model. How does it compare to the accuracy of the other model you generated? Generate a confusion matrix for your outcomes from this model.
+```{r}
+
+```
+5) Using `ggplot2()` generate a confusion matrix visualization from the confusion matrix above. Take a look at this link for some help generating this: https://www.energycode.org/posts/09032022-confusion-matrix/.
+```{r}
+
+```
+

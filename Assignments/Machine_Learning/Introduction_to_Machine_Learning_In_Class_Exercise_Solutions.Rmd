@@ -1,0 +1,156 @@
+---
+title: "Introduction_to_Machine_Learning_In_Class_Exercise_Solutions"
+output: pdf_document
+date: "2025-07-14"
+---
+
+1) Install the "AppliedPredictiveModeling" R package. Load the data set called "AlzheimerDisease". This data set was published by Craig-Schapiro et al. in 2011 and describes a clinical study of 333 patients where laboratory measurements are used to predict which subjects are most likely to develop cognitive impairment based on a few biological measurements. When you load the data, you will notice two data frames, one holds the predictor variables and the other holds the diagnosis. Combine these data frames.
+
+a) After combining the data frames and checking for missingness, split the data into 2/3 training and 1/3 testing. 
+b) Train an elastic net model with bootstrapping 10 samples. Use all of the variables in the data frame to predict the outcome. When training the model make sure to include the following: `preProcess = c("center", "scale")` and `tuneLength = 10`. Elastic net models apply L1 and L2 penalties that depend on the magnitude of the coefficients, which directly depends on the sale of the predictors. Centering and scaling the data makes all features comparable on the same scale, so the penalty treats them fairly. tuneLength tells CARET to try different values for some of these penalties. Discussof these penalities are beyond the scope of this class, so let's just set it to 10 here. 
+c) After tuning the model, make predictions on the testing set. Report the accuracy and gnerate a confusion matrix. 
+```{r}
+## Read in libraries
+library(caret)
+library(glmnet)
+library(AppliedPredictiveModeling)
+
+#Read in data
+data(AlzheimerDisease)
+
+## Format the data frame
+predictors$outcome <- diagnosis
+
+## Check for missing values
+length(which(is.na(predictors) == TRUE))
+
+# This code splits our data 
+trainIndex <- createDataPartition(predictors$outcome, p = 2/3, list = FALSE, times = 1)
+
+# We assign the 2/3 of data to a training set variable
+Train <- predictors[ trainIndex,]
+
+# We assign the remaining 1/3 of data to a testing set variable
+Test <- predictors[-trainIndex,]
+
+# Let's take a look at the dimensions of our training and testing set to see if that all worked out ok
+dim(Train)
+dim(Test)
+
+# Define trainControl with bootstrapping resampling
+fitControl <- trainControl(
+  method = "boot",        
+  number = 25,            
+  classProbs = TRUE,
+  summaryFunction = twoClassSummary
+)
+
+### Train the elastic net model
+elasticNetFit <- train(
+  outcome ~ .,            
+  data = Train,
+  method = "glmnet",
+  trControl = fitControl,
+  metric = "ROC",       
+  preProcess = c("center", "scale"),
+  tuneLength = 10          
+)
+
+# Inspect model results
+print(elasticNetFit)
+plot(elasticNetFit)
+
+# Make predictions on Test set
+predictions <- predict(elasticNetFit, newdata = Test)
+predProbs <- predict(elasticNetFit, newdata = Test, type = "prob")
+
+# Evaluate performance
+confMat <- confusionMatrix(predictions, Test$outcome)
+print(confMat)
+```
+2) Create a variable importance plot of the top 10 most important variables for this data set. Save this plot to your local machine. Include appropriate main titles as well as x- and y- axes. 
+```{r}
+varImpPlot <- varImp(elasticNetFit)
+png("/Users/f002yt8/Documents/GitHub/HDS-Foundations_of_Data_Science/Week_5/Lecture_Notes/images/var-imp-plot.png", width = 1000, height = 1000, res = 200)
+print(plot(varImpPlot, top = 10))
+dev.off()
+```
+3) Install the package "PRROC". You can use this package to generate a Precision-Recall Curve. This plot visualizes the trade off between precision or positive predictive value and recall, also known as sensitivity, across different classification threshold. Sensitivity measures the ability of a classification model to correctly identify positive instances (cases). The positive predictive value measures the proportion of positive predictions made by the model that are actually correct. Use the function `pr.curve()` to generate a Precision-Recall Curve for the "Impaired" outcome.
+```{r}
+library(PRROC)
+
+# Assuming predProbs and true labels
+pr <- pr.curve(scores.class0 = predProbs[, "Impaired"],
+               weights.class0 = Test$outcome == "Impaired",
+               curve = TRUE)
+plot(pr)
+```
+4) In the previous model, we used all of the variable to predict the outcome. In question 2, we identified the top 10 most important variables. Re-run the same model, but using only the top 10 most important features. Report the accuracy of this model. How does it compare to the accuracy of the other model you generated? Generate a confusion matrix for your outcomes from this model.
+```{r}
+# Select the top 15 most important variables
+featSel<-which(varImpPlot$importance$Overall>=10)
+
+# Subset the training set to contain only those variables
+featDF<-Train[,featSel]
+
+# Define trainControl with bootstrapping resampling
+fitControl <- trainControl(
+  method = "boot",        
+  number = 25,            
+  classProbs = TRUE,
+  summaryFunction = twoClassSummary
+)
+
+## Add back in outcome
+featDF$outcome <- Train$outcome
+
+### Train the elastic net model
+elasticNetFit <- train(
+  outcome ~ .,            
+  data = featDF,
+  method = "glmnet",
+  trControl = fitControl,
+  metric = "ROC",       
+  preProcess = c("center", "scale"),
+  tuneLength = 10          
+)
+
+# Inspect model results
+print(elasticNetFit)
+plot(elasticNetFit)
+
+# Make predictions on Test set
+predictions <- predict(elasticNetFit, newdata = Test)
+predProbs <- predict(elasticNetFit, newdata = Test, type = "prob")
+
+# Evaluate performance
+confMat <- confusionMatrix(predictions, Test$outcome)
+print(confMat)
+```
+5) Using `ggplot2()` generate a confusion matrix visualization from the confusion matrix above. Take a look at this link for some help generating this: https://www.energycode.org/posts/09032022-confusion-matrix/.
+```{r}
+# Create example confusion matrix table (replace with your data)
+conf_mat <- confusionMatrix(predictions, Test$outcome)  # your confusion matrix object
+
+# Extract confusion matrix table as data frame
+cm_table <- as.data.frame(conf_mat$table)
+
+# Rename columns for clarity
+colnames(cm_table) <- c("Prediction", "Reference", "Freq")
+
+png("/Users/f002yt8/Documents/GitHub/HDS-Foundations_of_Data_Science/Week_5/Lecture_Notes/images/confusion_matrix_elasticnet.png", width = 1000, height = 1000, res = 200)
+# Plot confusion matrix using ggplot2
+ggplot(data = cm_table, aes(x = Reference, y = Prediction, fill = Freq)) +
+  geom_tile(color = "black", alpha = 0.8) +       # Create tiles colored by frequency
+  geom_text(aes(label = Freq), color = "white", size = 6) +  # Add frequency text in tiles
+  scale_fill_gradient(low = "white", high = "steelblue") +  # Color gradient for tiles
+  labs(title = "Confusion Matrix",
+       x = "Actual Class",
+       y = "Predicted Class") +
+  theme_minimal() +
+  theme(axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        plot.title = element_text(size = 16, face = "bold", hjust = 0.5))
+dev.off()
+```
+

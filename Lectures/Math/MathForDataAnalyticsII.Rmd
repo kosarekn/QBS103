@@ -1,8 +1,8 @@
 ---
 title: 'Math for Data Analytics II'
 author: "QBS 103: Foundations of Data Science"
-date: "August 27, 2024"
-output: pdf_document
+date: "August 14, 2025"
+output: html_document
 ---
   
 ```{r setup, include=FALSE} 
@@ -246,6 +246,7 @@ $$ \int_{-1}^{1} 4x + 3 \,dx $$
 ``` {r}
 antiDF <- antiD(4*x + 3 ~ x)
 antiDF(1) - antiDF(-1)
+print(antiDF)
 ```
 
 
@@ -285,7 +286,9 @@ In R, we calculate this using the %*% synatx. For example:
 
 ```{r}
 A <- matrix(runif(100,0,100),ncol = 10)
+A
 B <- A + rnorm(10)
+B
 A %*% B
 ```
 
@@ -376,7 +379,8 @@ b <- c(1,1,1)
 We can then solve this system of equations by projecting $b$ into the space defined by $v_1$ and $v_2$. 
 
 ```{r}
-project(b ~ v + v2)
+library(mosaic)
+mosaic::project(b ~ v + v2)
 ```
 
 Hence, $x=0.3289$ and $y=0.092$. 
